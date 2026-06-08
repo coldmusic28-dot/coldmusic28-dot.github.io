@@ -1,37 +1,54 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <form class="calculator" name="calc">
-      <input type="text" class="value" name="txt" readonly="" />
-      <span class="num clear" onclick="document.calc.txt.value = ''">c</span>
-      <span class="num" onclick="document.calc.txt.value += '/'">/</span>
-      <span class="num" onclick="document.calc.txt.value += '*'">*</span>
-      <span class="num" onclick="document.calc.txt.value += '7'">7</span>
-      <span class="num" onclick="document.calc.txt.value += '8'">8</span>
-      <span class="num" onclick="document.calc.txt.value += '9'">9</span>
-      <span class="num" onclick="document.calc.txt.value += '-'">-</span>
-      <span class="num" onclick="document.calc.txt.value += '4'">4</span>
-      <span class="num" onclick="document.calc.txt.value += '5'">5</span>
-      <span class="num" onclick="document.calc.txt.value += '6'">6</span>
-      <span class="num plus" onclick="document.calc.txt.value += '+'">+</span>
-      <span class="num" onclick="document.calc.txt.value += '1'">1</span>
-      <span class="num" onclick="document.calc.txt.value += '2'">2</span>
-      <span class="num" onclick="document.calc.txt.value += '3'">3</span>
-      <span class="num" onclick="document.calc.txt.value += '0'">0</span>
-      <span class="num" onclick="document.calc.txt.value += '00'">00</span>
-      <span class="num" onclick="document.calc.txt.value += '.'">.</span>
-      <span
-        class="num equal"
-        onclick="document.calc.txt.value = eval(calc.txt.value)"
-      >
-        =
-      </span>
-    </form>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Tic Tac Toe</h1>
+    </header>
+
+    <main>
+        <p>Turn</p>
+        <div class="gameboard">
+            <div class="gamecell" data-position="0"></div>
+            <div class="gamecell" data-position="1"></div>
+            <div class="gamecell" data-position="2"></div>
+            <div class="gamecell" data-position="3"></div>
+            <div class="gamecell" data-position="4"></div>
+            <div class="gamecell" data-position="5"></div>
+            <div class="gamecell" data-position="6"></div>
+            <div class="gamecell" data-position="7"></div>
+            <div class="gamecell" data-position="8"></div>
+        </div>
+        <button type="button">Reset</button>
+    </main>
+
+    <dialog class="names-dialog">
+        <form>
+            <p class="title">Let's start the game!</p>
+            <p  class="player-name">
+                <label for="name1">Player 1's Name:</label>
+                <input type="text" name="name1" id="name1" maxlength="15" required>
+            </p>
+            <p  class="player-name">
+                <label for="name2">Player 2's Name:</label>
+                <input type="text" name="name2" id="name2" maxlength="15" required>
+            </p>
+            <button>Confirm</button>
+        </form>
+    </dialog>
+
+    <dialog class="result-dialog">
+        <h1>Player X Wins!</h1>
+    </dialog>
+
+    <footer>
+        <p>Made by Quluzade Ibrahim</p>
+    </footer>
+</body>
 </html>
