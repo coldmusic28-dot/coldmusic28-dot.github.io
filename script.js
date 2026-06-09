@@ -18,15 +18,16 @@ let scores = {
     draws: 0
 };
 
+// Fixed winning combinations (horizontal, vertical, and diagonal indices)
 const winningConditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
+    [0, 1, 2], // Top row
+    [3, 4, 5], // Middle row
+    [6, 7, 8], // Bottom row
+    [0, 3, 6], // Left column
+    [1, 4, 7], // Middle column
+    [2, 5, 8], // Right column
+    [0, 4, 8], // Top-left to bottom-right diagonal
+    [2, 4, 6]  // Top-right to bottom-left diagonal
 ];
 
 function handleCellClick(clickedCellEvent) {
@@ -49,11 +50,12 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 
 function handleResultValidation() {
     let roundWon = false;
-    for (let i = 0; i <= 7; i++) {
+    for (let i = 0; i < winningConditions.length; i++) {
         const winCondition = winningConditions[i];
         let a = gameState[winCondition[0]];
         let b = gameState[winCondition[1]];
         let c = gameState[winCondition[2]];
+        
         if (a === '' || b === '' || c === '') {
             continue;
         }
