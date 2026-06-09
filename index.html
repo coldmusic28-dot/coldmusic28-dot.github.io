@@ -3,125 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe with Scoreboard</title>
+    <title>Tic Tac Toe - Retro Cyber</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --cell-bg: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --color-x: #38bdf8;
+            --color-o: #f43f5e;
+            --color-draw: #10b981;
+            --accent: #6366f1;
+        }
+
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
             margin: 0;
             padding: 0;
         }
 
         body {
-            background-color: #f4f4f9;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             text-align: center;
-            background: white;
+            background: var(--container-bg);
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            width: 380px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #475569;
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--color-x), var(--color-o));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        /* Scoreboard Styling */
         .scoreboard {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            background: #e9ecef;
-            padding: 10px 15px;
-            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .score-box {
+            background: #0f172a80;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #334155;
             display: flex;
             flex-direction: column;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #555;
+            gap: 4px;
         }
 
-        .score-box span:last-child {
-            font-size: 1.5rem;
-            color: #007bff;
-            margin-top: 5px;
+        .score-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
         }
+
+        .score-box .val {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #score-x .val { color: var(--color-x); }
+        #score-draw .val { color: var(--color-draw); }
+        #score-o .val { color: var(--color-o); }
 
         #turn-indicator {
-            font-size: 1.2rem;
-            color: #333;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            min-height: 27px;
         }
 
+        /* Grid Layout */
         .board {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+            aspect-ratio: 1 / 1;
         }
 
         .cell {
-            width: 100px;
-            height: 100px;
-            background: #e9ecef;
-            border-radius: 8px;
+            background: var(--cell-bg);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            font-weight: bold;
-            color: #333;
+            font-size: 2.75rem;
+            font-weight: 800;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            user-select: none;
         }
 
         .cell:hover:not(.taken) {
-            background: #dee2e6;
+            background: #475569;
+            transform: scale(1.03);
+            border-color: #64748b;
         }
 
         .cell.taken {
             cursor: not-allowed;
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        /* Stylized X and O Marks */
+        .cell.p-x {
+            color: var(--color-x);
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .cell.p-o {
+            color: var(--color-o);
+            text-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+        }
+
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         button {
-            padding: 10px 15px;
+            width: 100%;
+            padding: 14px;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
-            margin: 5px;
-            transition: background 0.3s;
+            transition: all 0.2s ease;
         }
 
         #restart-btn {
-            background-color: #007bff;
+            background: var(--accent);
             color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         #restart-btn:hover {
-            background-color: #0056b3;
+            background: #4f46e5;
+            transform: translateY(-1px);
         }
 
         #reset-scoreboard-btn {
-            background-color: #dc3545;
-            color: white;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #334155;
         }
 
         #reset-scoreboard-btn:hover {
-            background-color: #bd2130;
+            background: #ef444415;
+            color: #ef4444;
+            border-color: #ef444450;
         }
     </style>
 </head>
@@ -131,23 +192,23 @@
         
         <!-- Scoreboard -->
         <div class="scoreboard">
-            <div class="score-box">
-                <span>Player X</span>
-                <span id="score-x">0</span>
+            <div class="score-box" id="score-x">
+                <span class="label">Player X</span>
+                <span class="val">0</span>
             </div>
-            <div class="score-box">
-                <span>Draws</span>
-                <span id="score-draw">0</span>
+            <div class="score-box" id="score-draw">
+                <span class="label">Draws</span>
+                <span class="val">0</span>
             </div>
-            <div class="score-box">
-                <span>Player O</span>
-                <span id="score-o">0</span>
+            <div class="score-box" id="score-o">
+                <span class="label">Player O</span>
+                <span class="val">0</span>
             </div>
         </div>
 
-        <h2 id="turn-indicator">Player X's Turn</h2>
+        <div id="turn-indicator">Player X's Turn</div>
         
-        <!-- Board -->
+        <!-- Board Grid -->
         <div class="board" id="board">
             <div class="cell" data-index="0"></div>
             <div class="cell" data-index="1"></div>
@@ -160,8 +221,11 @@
             <div class="cell" data-index="8"></div>
         </div>
 
-        <button id="restart-btn">Restart Game</button>
-        <button id="reset-scoreboard-btn">Reset Scoreboard</button>
+        <!-- Controls -->
+        <div class="controls">
+            <button id="restart-btn">Next Round</button>
+            <button id="reset-scoreboard-btn">Reset All Scores</button>
+        </div>
     </div>
 
     <script>
@@ -170,128 +234,88 @@
         const restartBtn = document.getElementById('restart-btn');
         const resetScoreboardBtn = document.getElementById('reset-scoreboard-btn');
 
-        const scoreXElement = document.getElementById('score-x');
-        const scoreOElement = document.getElementById('score-o');
-        const scoreDrawElement = document.getElementById('score-draw');
+        const scoreXVal = document.querySelector('#score-x .val');
+        const scoreOVal = document.querySelector('#score-o .val');
+        const scoreDrawVal = document.querySelector('#score-draw .val');
 
         let currentPlayer = 'X';
         let gameActive = true;
         let gameState = ["", "", "", "", "", "", "", "", ""];
 
-        let scores = {
-            X: 0,
-            O: 0,
-            draws: 0
-        };
+        let scores = { X: 0, O: 0, draws: 0 };
 
-        // Fixed win combinations with correct index paths
         const winningConditions = [
-            [0, 1, 2], // Top row
-            [3, 4, 5], // Middle row
-            [6, 7, 8], // Bottom row
-            [0, 3, 6], // Left column
-            [1, 4, 7], // Middle column
-            [2, 5, 8], // Right column
-            [0, 4, 8], // Diagonal top-left to bottom-right
-            [2, 4, 6]  // Diagonal top-right to bottom-left
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontals
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Verticals
+            [0, 4, 8], [2, 4, 6]             // Diagonals
         ];
 
-        function handleCellClick(clickedCellEvent) {
-            const clickedCell = clickedCellEvent.target;
+        function handleCellClick(e) {
+            const clickedCell = e.target;
             const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
-            if (gameState[clickedCellIndex] !== "" || !gameActive) {
-                return;
-            }
+            if (gameState[clickedCellIndex] !== "" || !gameActive) return;
 
             handleCellPlayed(clickedCell, clickedCellIndex);
             handleResultValidation();
         }
 
-        function handleCellPlayed(clickedCell, clickedCellIndex) {
-            gameState[clickedCellIndex] = currentPlayer;
-            clickedCell.innerText = currentPlayer;
-            clickedCell.classList.add('taken');
+        function handleCellPlayed(cell, index) {
+            gameState[index] = currentPlayer;
+            cell.innerText = currentPlayer;
+            cell.classList.add('taken', currentPlayer === 'X' ? 'p-x' : 'p-o');
         }
 
         function handleResultValidation() {
             let roundWon = false;
             for (let i = 0; i < winningConditions.length; i++) {
-                const winCondition = winningConditions[i];
-                let a = gameState[winCondition[0]];
-                let b = gameState[winCondition[1]];
-                let c = gameState[winCondition[2]];
-                
-                if (a === '' || b === '' || c === '') {
-                    continue;
-                }
-                if (a === b && b === c) {
+                const [a, b, c] = winningConditions[i];
+                if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
                     roundWon = true;
                     break;
                 }
             }
 
             if (roundWon) {
-                handleWin();
+                turnIndicator.innerHTML = `Player <span style="color: var(--color-${currentPlayer.toLowerCase()})">${currentPlayer}</span> Wins!`;
+                scores[currentPlayer]++;
+                updateScoreboard();
+                gameActive = false;
                 return;
             }
 
-            let roundDraw = !gameState.includes("");
-            if (roundDraw) {
-                handleDraw();
+            if (!gameState.includes("")) {
+                turnIndicator.innerHTML = `<span style="color: var(--color-draw)">It's a Draw!</span>`;
+                scores.draws++;
+                updateScoreboard();
+                gameActive = false;
                 return;
             }
 
-            handlePlayerChange();
-        }
-
-        function handleWin() {
-            turnIndicator.innerText = `Player ${currentPlayer} Wins!`;
-            scores[currentPlayer]++;
-            updateScoreboard();
-            gameActive = false;
-        }
-
-        function handleDraw() {
-            turnIndicator.innerText = "Draw!";
-            scores.draws++;
-            updateScoreboard();
-            gameActive = false;
-        }
-
-        function handlePlayerChange() {
             currentPlayer = currentPlayer === "X" ? "O" : "X";
-            turnIndicator.innerText = `Player ${currentPlayer}'s Turn`;
+            turnIndicator.innerHTML = `Player <span style="color: var(--color-${currentPlayer.toLowerCase()})">${currentPlayer}</span>'s Turn`;
         }
 
         function handleRestartGame() {
             gameActive = true;
             currentPlayer = "X";
             gameState = ["", "", "", "", "", "", "", "", ""];
-            turnIndicator.innerText = `Player X's Turn`;
+            turnIndicator.innerHTML = `Player <span style="color: var(--color-x)">X</span>'s Turn`;
             cellElements.forEach(cell => {
                 cell.innerText = "";
-                cell.classList.remove('taken');
+                cell.className = "cell";
             });
         }
 
         function updateScoreboard() {
-            scoreXElement.innerText = scores.X;
-            scoreOElement.innerText = scores.O;
-            scoreDrawElement.innerText = scores.draws;
+            scoreXVal.innerText = scores.X;
+            scoreOVal.innerText = scores.O;
+            scoreDrawVal.innerText = scores.draws;
         }
 
         function handleResetScoreboard() {
-            scores.X = 0;
-            scores.O = 0;
-            scores.draws = 0;
+            scores = { X: 0, O: 0, draws: 0 };
             updateScoreboard();
             handleRestartGame();
         }
 
-        cellElements.forEach(cell => cell.addEventListener('click', handleCellClick));
-        restartBtn.addEventListener('click', handleRestartGame);
-        resetScoreboardBtn.addEventListener('click', handleResetScoreboard);
-    </script>
-</body>
-</html>
