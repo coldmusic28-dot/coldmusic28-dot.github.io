@@ -1,1 +1,353 @@
-function a0_0x2fb4(_0x349815,_0x468313){const _0x29ed6d=a0_0x29ed();return a0_0x2fb4=function(_0x2fb4a0,_0x61d42d){_0x2fb4a0=_0x2fb4a0-0x151;let _0x548b72=_0x29ed6d[_0x2fb4a0];return _0x548b72;},a0_0x2fb4(_0x349815,_0x468313);}const a0_0x10b898=a0_0x2fb4;(function(_0x5f5479,_0x583b31){const _0x5a3f94=a0_0x2fb4,_0x104e92=_0x5f5479();while(!![]){try{const _0x344ac2=parseInt(_0x5a3f94(0x199))/0x1+-parseInt(_0x5a3f94(0x156))/0x2*(parseInt(_0x5a3f94(0x181))/0x3)+parseInt(_0x5a3f94(0x183))/0x4+-parseInt(_0x5a3f94(0x1a4))/0x5+parseInt(_0x5a3f94(0x169))/0x6*(-parseInt(_0x5a3f94(0x19d))/0x7)+-parseInt(_0x5a3f94(0x182))/0x8+-parseInt(_0x5a3f94(0x174))/0x9*(-parseInt(_0x5a3f94(0x15b))/0xa);if(_0x344ac2===_0x583b31)break;else _0x104e92['push'](_0x104e92['shift']());}catch(_0x587ef7){_0x104e92['push'](_0x104e92['shift']());}}}(a0_0x29ed,0x8c09f));const submit_form=document['getElementById'](a0_0x10b898(0x16f)),restart_button=document[a0_0x10b898(0x198)](a0_0x10b898(0x151)),player1_text=document[a0_0x10b898(0x198)](a0_0x10b898(0x164)),player2_text=document[a0_0x10b898(0x198)](a0_0x10b898(0x168)),player1_input=document['getElementById'](a0_0x10b898(0x189)),player2_input=document['getElementById'](a0_0x10b898(0x16e)),score_board=document['getElementsByClassName'](a0_0x10b898(0x197))[0x0],winnerModal=document[a0_0x10b898(0x198)](a0_0x10b898(0x157)),submit_button=document[a0_0x10b898(0x198)](a0_0x10b898(0x16b));restart_button[a0_0x10b898(0x188)]=()=>{restartGame();},submit_form['addEventListener']('submit',playerSubmit);var player1,player2;function playerSubmit(_0x143b85){const _0x2842f8=a0_0x10b898;_0x143b85[_0x2842f8(0x165)]();const _0x1603f5=new FormData(_0x143b85[_0x2842f8(0x163)]),_0x36c47e=Object[_0x2842f8(0x19a)](_0x1603f5);player1=createPlayer(_0x36c47e[_0x2842f8(0x189)],'X'),player2=createPlayer(_0x36c47e[_0x2842f8(0x16e)],'O');let _0x4cc2fd=document[_0x2842f8(0x16a)]('p'),_0x4dec84=document[_0x2842f8(0x16a)]('p');_0x4cc2fd[_0x2842f8(0x19b)]=player1[_0x2842f8(0x177)]+'\x20(X)',_0x4dec84[_0x2842f8(0x19b)]=player2[_0x2842f8(0x177)]+'\x20(O)',_0x4cc2fd[_0x2842f8(0x186)][_0x2842f8(0x15d)]='0',_0x4dec84[_0x2842f8(0x186)][_0x2842f8(0x15d)]='0',player1_input[_0x2842f8(0x159)](_0x4cc2fd),player2_input[_0x2842f8(0x159)](_0x4dec84),submit_button[_0x2842f8(0x186)][_0x2842f8(0x18e)]=_0x2842f8(0x175),player1[_0x2842f8(0x19e)](),player2[_0x2842f8(0x19e)]();}function createPlayer(_0x41b745,_0x22aa56){const _0x2afcfb=_0x41b745,_0xf40520=_0x22aa56;var _0xa7a9c2=0x0;function _0x2bfd2a(){const _0x40a1c1=a0_0x2fb4;_0xa7a9c2++,player1_text[_0x40a1c1(0x19b)]=player1[_0x40a1c1(0x177)]+'\x0a'+player1[_0x40a1c1(0x166)](),player2_text[_0x40a1c1(0x19b)]=player2[_0x40a1c1(0x177)]+'\x0a'+player2['getScore']();}function _0x219525(){const _0x31e337=a0_0x2fb4;_0xa7a9c2=0x0,player1_text['innerText']=player1[_0x31e337(0x177)]+'\x0a'+player1['getScore'](),player2_text['innerText']=player2['name']+'\x0a'+player2[_0x31e337(0x166)]();}function _0xbda392(){return _0xa7a9c2;}return{'name':_0x2afcfb,'sign':_0xf40520,'updateScore':_0x2bfd2a,'getScore':_0xbda392,'resetScore':_0x219525};}const boards=[];function GameBoard(){const _0x3c6417=a0_0x10b898;this['board']=[['1','2','3'],['4','5','6'],['7','8','9']];for(let _0x461e4d=0x1;_0x461e4d<0xa;_0x461e4d++){this[_0x3c6417(0x15e)+_0x461e4d]=document['getElementById'](''+_0x461e4d);}this[_0x3c6417(0x1a7)]=document['getElementsByClassName'](_0x3c6417(0x17c)),this[_0x3c6417(0x18a)]={'rdia':['button3',_0x3c6417(0x167),_0x3c6417(0x176)],'ldia':[_0x3c6417(0x195),_0x3c6417(0x167),_0x3c6417(0x16d)],'fcol':[_0x3c6417(0x195),_0x3c6417(0x18b),_0x3c6417(0x176)],'scol':[_0x3c6417(0x192),_0x3c6417(0x167),_0x3c6417(0x173)],'tcol':[_0x3c6417(0x1a1),'button6','button9'],'frow':[_0x3c6417(0x195),'button2',_0x3c6417(0x1a1)],'srow':[_0x3c6417(0x18b),_0x3c6417(0x167),_0x3c6417(0x1a3)],'trow':[_0x3c6417(0x176),_0x3c6417(0x173),_0x3c6417(0x16d)]},Array[_0x3c6417(0x187)](this[_0x3c6417(0x1a7)])[_0x3c6417(0x18d)](_0x2f6352=>{const _0x52b21f=_0x3c6417;_0x2f6352[_0x52b21f(0x19b)]='',_0x2f6352[_0x52b21f(0x186)]['backgroundColor']=_0x52b21f(0x184),_0x2f6352[_0x52b21f(0x19f)]=![];}),boards[_0x3c6417(0x19c)](this);}function buttonController(_0x514880){for(let _0x11a25b=0x0;_0x11a25b<0x3;_0x11a25b++){for(let _0x4bc56e=0x0;_0x4bc56e<0x3;_0x4bc56e++){let _0x32346c='button'+(_0x11a25b*0x3+_0x4bc56e+0x1);_0x514880[_0x32346c]['onclick']=()=>{const _0x3cb1c2=a0_0x2fb4;if(!(player1&&player2))alert('please\x20create\x20players\x20first');else{const _0xb48694=getInput();_0x514880[_0x3cb1c2(0x191)][_0x11a25b][_0x4bc56e]=_0xb48694,_0x514880[_0x32346c][_0x3cb1c2(0x19b)]=_0xb48694,_0x514880[_0x32346c]['disabled']=!![],checker(_0x514880);}};}}}var turn=![];function getInput(){const _0x2d373b=a0_0x10b898;return turn===!![]?(turn=![],player1_text[_0x2d373b(0x186)][_0x2d373b(0x17a)]=_0x2d373b(0x15a),player2_text[_0x2d373b(0x186)]['backgroundColor']=_0x2d373b(0x184),player2['sign']):(turn=!![],player2_text[_0x2d373b(0x186)][_0x2d373b(0x17a)]=_0x2d373b(0x15a),player1_text['style'][_0x2d373b(0x17a)]='white',player1[_0x2d373b(0x18f)]);;}function play(){const _0x1ae1e0=a0_0x10b898;turn=![];const _0x32c49c=new GameBoard();buttonController(_0x32c49c),player1_text['style'][_0x1ae1e0(0x17a)]=_0x1ae1e0(0x15a),player2_text['style'][_0x1ae1e0(0x17a)]='white';}function checker(_0x10a38a){const _0x19b8e0=a0_0x10b898;var _0xa93052='',_0x27cf=0x0;function _0x40acbd(_0x51251a){const _0x397e3d=a0_0x2fb4;return _0xa93052=_0x51251a[0x0],_0x51251a[_0x397e3d(0x16c)](_0x3fe2c7=>_0x3fe2c7===_0x51251a[0x0]);}frow=_0x10a38a[_0x19b8e0(0x191)][0x0],srow=_0x10a38a[_0x19b8e0(0x191)][0x1],trow=_0x10a38a['board'][0x2],fcol=[_0x10a38a[_0x19b8e0(0x191)][0x0][0x0],_0x10a38a[_0x19b8e0(0x191)][0x1][0x0],_0x10a38a[_0x19b8e0(0x191)][0x2][0x0]],scol=[_0x10a38a[_0x19b8e0(0x191)][0x0][0x1],_0x10a38a[_0x19b8e0(0x191)][0x1][0x1],_0x10a38a['board'][0x2][0x1]],tcol=[_0x10a38a[_0x19b8e0(0x191)][0x0][0x2],_0x10a38a[_0x19b8e0(0x191)][0x1][0x2],_0x10a38a[_0x19b8e0(0x191)][0x2][0x2]],ldia=[_0x10a38a[_0x19b8e0(0x191)][0x0][0x0],_0x10a38a[_0x19b8e0(0x191)][0x1][0x1],_0x10a38a[_0x19b8e0(0x191)][0x2][0x2]],rdia=[_0x10a38a[_0x19b8e0(0x191)][0x0][0x2],_0x10a38a['board'][0x1][0x1],_0x10a38a['board'][0x2][0x0]];if(_0x40acbd(rdia))highlight(_0x10a38a,'rdia');else{if(_0x40acbd(ldia))highlight(_0x10a38a,'ldia');else{if(_0x40acbd(fcol))highlight(_0x10a38a,'fcol');else{if(_0x40acbd(scol))highlight(_0x10a38a,_0x19b8e0(0x154));else{if(_0x40acbd(tcol))highlight(_0x10a38a,'tcol');else{if(_0x40acbd(frow))highlight(_0x10a38a,_0x19b8e0(0x170));else{if(_0x40acbd(srow))highlight(_0x10a38a,_0x19b8e0(0x152));else{if(_0x40acbd(trow))highlight(_0x10a38a,_0x19b8e0(0x196));else{for(const _0x5c233e of _0x10a38a[_0x19b8e0(0x191)]){for(const _0x5da716 of _0x5c233e){if(_0x5da716<=0x9&&_0x5da716>=0x0)return 0x0;}}return roundTied(),restartBoard(),0x0;}}}}}}}}return Array[_0x19b8e0(0x187)](_0x10a38a[_0x19b8e0(0x1a7)])['forEach'](_0x4306ee=>{const _0x200b19=_0x19b8e0;_0x4306ee[_0x200b19(0x19f)]=!![];}),winner(_0xa93052),0x0;}function highlight(_0x41f4bc,_0x3f1ac5){const _0x257fad=a0_0x10b898;_0x41f4bc[_0x257fad(0x18a)][_0x3f1ac5]&&_0x41f4bc[_0x257fad(0x18a)][_0x3f1ac5]['forEach'](_0x3f7cda=>{_0x41f4bc[_0x3f7cda]['style']['backgroundColor']='green';});}function roundTied(){}function winner(_0x52b49d){const _0x4da299=a0_0x10b898;var _0x3d2ee1=0x0,_0x55a3dc=0x0;return player1['sign']===_0x52b49d?(_0x3d2ee1=player1,_0x55a3dc=player2):(_0x3d2ee1=player2,_0x55a3dc=player1),_0x3d2ee1[_0x4da299(0x15f)](),_0x3d2ee1[_0x4da299(0x166)]()>=0x3||_0x55a3dc[_0x4da299(0x166)]()>=0x3?gameOver(_0x3d2ee1,_0x55a3dc):restartBoard(),scoreHistory(),0x0;}function a0_0x29ed(){const _0x479a60=['player2-text','12YOcEDD','createElement','submit','every','button9','player2','player-info','frow','\x20WON!','justify-self','button8','10101951yfdGBj','none','button7','name','div','length','backgroundColor','height','board-button','black','modal-text','getElementsByClassName','removeAttribute','6ijMDYh','2427104lblehe','782780OnUAab','white','2px','style','from','onclick','player1','button_directions','button4','appendChild','forEach','display','sign','gap','board','button2','center','textAlign','button1','trow','score-board','getElementById','47513ZVLfHH','fromEntries','innerText','push','1636026fqdYxV','resetScore','disabled','grid-template-columns','button3','close','button6','592845DqeVUi','0\x201em\x200\x201em','innerHTML','allButtons','restart','srow','setAttribute','scol','align-self','1025094TepjkV','winnerModal','154px','replaceWith','yellow','20soahHm','block','margin','button','updateScore','grid','50px\x2050px\x2050px','class','target','player1-text','preventDefault','getScore','button5'];a0_0x29ed=function(){return _0x479a60;};return a0_0x29ed();}function gameOver(_0x5391ef,_0x4f7e0f){const _0x53b8a3=a0_0x10b898;var _0x4c1bc5=document[_0x53b8a3(0x17f)](_0x53b8a3(0x1a2))[0x0],_0x2226c5=document[_0x53b8a3(0x198)](_0x53b8a3(0x17e));return winnerModal['style'][_0x53b8a3(0x18e)]=_0x53b8a3(0x15c),_0x2226c5[_0x53b8a3(0x19b)]=_0x5391ef[_0x53b8a3(0x177)]+_0x53b8a3(0x171),_0x2226c5['style'][_0x53b8a3(0x194)]=_0x53b8a3(0x193),_0x4c1bc5[_0x53b8a3(0x188)]=function(){const _0x20cb40=_0x53b8a3;winnerModal[_0x20cb40(0x186)][_0x20cb40(0x18e)]=_0x20cb40(0x175);},window[_0x53b8a3(0x188)]=function(){const _0x398e74=_0x53b8a3;event[_0x398e74(0x163)]==winnerModal&&(winnerModal['style'][_0x398e74(0x18e)]=_0x398e74(0x175));},0x0;}function restartBoard(){setTimeout(()=>{play();},0x5dc);}function restartGame(){const _0x573bbf=a0_0x10b898;score_board[_0x573bbf(0x1a6)]='';for(let _0x5d6428=0x0;_0x5d6428<0x3;_0x5d6428++){boards['pop']();}player1[_0x573bbf(0x19e)](),player2[_0x573bbf(0x19e)](),restartBoard();}function scoreHistory(){const _0x3ea635=a0_0x10b898;let _0x2049a3=document['createElement'](_0x3ea635(0x178));_0x2049a3[_0x3ea635(0x153)](_0x3ea635(0x162),'history'),_0x2049a3['style']['width']=_0x3ea635(0x158),_0x2049a3[_0x3ea635(0x186)][_0x3ea635(0x17b)]=_0x3ea635(0x158),_0x2049a3['style'][_0x3ea635(0x17a)]=_0x3ea635(0x17d),_0x2049a3['style'][_0x3ea635(0x18e)]=_0x3ea635(0x160),_0x2049a3[_0x3ea635(0x186)][_0x3ea635(0x1a0)]=_0x3ea635(0x161),_0x2049a3['style'][_0x3ea635(0x190)]=_0x3ea635(0x185),_0x2049a3['style'][_0x3ea635(0x172)]=_0x3ea635(0x193),_0x2049a3[_0x3ea635(0x186)][_0x3ea635(0x155)]=_0x3ea635(0x193),_0x2049a3[_0x3ea635(0x186)][_0x3ea635(0x15d)]=_0x3ea635(0x1a5);let _0x1f7c8d=boards[boards[_0x3ea635(0x179)]-0x1];for(let _0x439b81=0x1;_0x439b81<0xa;_0x439b81++){let _0x394089=_0x1f7c8d[_0x3ea635(0x15e)+_0x439b81],_0x4fdce2=_0x394089['cloneNode'](!![]);_0x4fdce2['disabled']=!![],_0x4fdce2[_0x3ea635(0x180)](_0x3ea635(0x162)),_0x2049a3[_0x3ea635(0x18c)](_0x4fdce2);}score_board[_0x3ea635(0x18c)](_0x2049a3);}play();
+
+let currentPlayer = 'X';
+
+let drawCount = 0 ;
+let noWin = true ;
+
+let checkWinMatch = function(){
+	 noWin = false ;
+}
+
+let playerX_Score = 0 ;
+let playerY_Score = 0 ;
+
+let switchPlayer = () => {
+	currentPlayer = (currentPlayer==='X') ? 'O' : 'X';
+};
+
+let btn = document.querySelectorAll('.btn');
+let btnMode = document.querySelector('#btn-pic');
+let playerScores = document.querySelectorAll('#scores p');
+let bodyEl = document.querySelector('body');
+let btnNewGame = document.querySelector('#new-game');
+let b1 = document.querySelector('.b1');
+let b2 = document.querySelector('.b2');
+let b3 = document.querySelector('.b3');
+let b4 = document.querySelector('.b4');
+let b5 = document.querySelector('.b5');
+let b6 = document.querySelector('.b6');
+let b7 = document.querySelector('.b7');
+let b8 = document.querySelector('.b8');
+let b9 = document.querySelector('.b9');
+let activePlayer = document.querySelector('#current-player');
+let playerX = document.querySelector('#x-score');
+let playerY = document.querySelector('#y-score');
+bodyEl.style.background = 'white';
+
+btnMode.addEventListener('click',()=>{
+	if((bodyEl.style.background==='white')){
+		bodyEl.style.background = 'black'
+		playerScores[0].style.color='blue';
+		playerScores[1].style.color='blue';
+	}else{
+		bodyEl.style.background = 'white'
+		playerScores[0].style.color='black';
+		playerScores[1].style.color='black';
+	}
+});
+
+let setEmptyButtons = () => {
+	b1.textContent='';
+	b2.textContent='';
+	b3.textContent='';
+	b4.textContent='';
+	b5.textContent='';
+	b6.textContent='';
+	b7.textContent='';
+	b8.textContent='';
+	b9.textContent='';
+};
+
+let EnableButtons = () => {
+	b1.disabled = false;
+	b2.disabled = false;
+	b3.disabled = false;
+	b4.disabled = false;
+	b5.disabled = false;
+	b6.disabled = false;
+	b7.disabled = false;
+	b8.disabled = false;
+	b9.disabled = false;
+}
+
+let checkEmptyButtons = () => {
+	if(b1.textContent == '')b1.disabled=true;
+	if(b2.textContent == '')b2.disabled=true;
+	if(b3.textContent == '')b3.disabled=true;
+	if(b4.textContent == '')b4.disabled=true;
+	if(b5.textContent == '')b5.disabled=true;
+	if(b6.textContent == '')b6.disabled=true;
+	if(b7.textContent == '')b7.disabled=true;
+	if(b8.textContent == '')b8.disabled=true;
+	if(b9.textContent == '')b9.disabled=true;
+}
+
+let disableAllButtons = function(){
+	b1.disabled = true ;
+	b2.disabled = true ;
+	b3.disabled = true ;
+	b4.disabled = true ;
+	b5.disabled = true ;
+	b6.disabled = true ;
+	b7.disabled = true ;
+	b8.disabled = true ;
+	b9.disabled = true ;
+}; 
+
+let checkWin = () => {
+	
+								/** Matching Rows **/
+								
+					/* Matching rows for player X */
+	if(b1.textContent=='X' && b2.textContent=='X' 
+	&& b3.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b1.style.backgroundColor ='pink';
+				b2.style.backgroundColor ='pink';
+				b3.style.backgroundColor ='pink';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+	if(b4.textContent=='X' && b5.textContent=='X' 
+	&& b6.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b4.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b6.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+	if(b7.textContent=='X' && b8.textContent=='X' 
+	&& b9.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b7.style.backgroundColor ='orange';
+				b8.style.backgroundColor ='orange';
+				b9.style.backgroundColor ='orange';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+					/* Matching rows for player O */
+if(b1.textContent=='O' && b2.textContent=='O' 
+	&& b3.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b1.style.backgroundColor ='pink';
+				b2.style.backgroundColor ='pink';
+				b3.style.backgroundColor ='pink';
+				checkEmptyButtons();	
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+	if(b4.textContent=='O' && b5.textContent=='O' 
+	&& b6.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b4.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b6.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+	if(b7.textContent=='O' && b8.textContent=='O' 
+	&& b9.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b7.style.backgroundColor ='orange';
+				b8.style.backgroundColor ='orange';
+				b9.style.backgroundColor ='orange';
+				checkEmptyButtons();
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+			/** Matching Columns **/
+		
+	/* Matching Columns for player X */	
+	if(b1.textContent=='X' && b4.textContent=='X' 
+	&& b7.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b1.style.backgroundColor ='pink';
+				b4.style.backgroundColor ='pink';
+				b7.style.backgroundColor ='pink';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+	if(b2.textContent=='X' && b5.textContent=='X' 
+	&& b8.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b2.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b8.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+	if(b3.textContent=='X' && b6.textContent=='X' 
+	&& b9.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b3.style.backgroundColor ='orange';
+				b6.style.backgroundColor ='orange';
+				b9.style.backgroundColor ='orange';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+
+			/* Matching Columns for player O */
+			if(b1.textContent=='O' && b4.textContent=='O' 
+	&& b7.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b1.style.backgroundColor ='pink';
+				b4.style.backgroundColor ='pink';
+				b7.style.backgroundColor ='pink';
+				checkEmptyButtons();	
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+	if(b2.textContent=='O' && b5.textContent=='O' 
+	&& b8.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b2.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b8.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+	if(b3.textContent=='O' && b6.textContent=='O' 
+	&& b9.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b3.style.backgroundColor ='orange';
+				b6.style.backgroundColor ='orange';
+				b9.style.backgroundColor ='orange';
+				checkEmptyButtons();
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+			
+			/** Matching Diagonals **/
+			
+/* Matching Diagonals for player X */
+	if(b1.textContent=='X' && b5.textContent=='X' 
+	&& b9.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b1.style.backgroundColor ='pink';
+				b5.style.backgroundColor ='pink';
+				b9.style.backgroundColor ='pink';
+				checkEmptyButtons();	
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+	if(b3.textContent=='X' && b5.textContent=='X' 
+	&& b7.textContent =='X'){
+				checkWinMatch();
+				alert('Player X wins');
+				b3.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b7.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerX_Score++;
+				playerX.textContent = playerX_Score;
+			}
+			
+/* Matching Diagonals for player O */
+if(b1.textContent=='O' && b5.textContent=='O' 
+	&& b9.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b1.style.backgroundColor ='pink';
+				b5.style.backgroundColor ='pink';
+				b9.style.backgroundColor ='pink';
+				checkEmptyButtons();	
+				playerY_Score++;
+				playerY.textContent = playerY_Score;				
+			}
+			
+	if(b3.textContent=='O' && b5.textContent=='O' 
+	&& b7.textContent =='O'){
+				checkWinMatch();
+				alert('Player O wins');
+				b3.style.backgroundColor ='blue';
+				b5.style.backgroundColor ='blue';
+				b7.style.backgroundColor ='blue';
+				checkEmptyButtons();
+				playerY_Score++;
+				playerY.textContent = playerY_Score;
+			}
+
+}
+
+let buttonClick = (b) => {
+	b.addEventListener('click',()=>{
+		if(b.textContent==''){
+			b.textContent = currentPlayer;
+			drawCount++;
+			checkWin();
+			if(drawCount===9 && noWin === true){
+				alert("It's a draw!");
+			}
+			switchPlayer();
+			activePlayer.textContent = currentPlayer;
+		}
+	});
+};
+
+buttonClick(b1);
+buttonClick(b2);
+buttonClick(b3);
+buttonClick(b4);
+buttonClick(b5);
+buttonClick(b6);
+buttonClick(b7);
+buttonClick(b8);
+buttonClick(b9);
+
+let setButtonsDefaultBackColor = () => {
+	b1.style.backgroundColor = 'lightgrey';
+	b2.style.backgroundColor = 'lightgrey';
+	b3.style.backgroundColor = 'lightgrey';
+	b4.style.backgroundColor = 'lightgrey';
+	b5.style.backgroundColor = 'lightgrey';
+	b6.style.backgroundColor = 'lightgrey';
+	b7.style.backgroundColor = 'lightgrey';
+	b8.style.backgroundColor = 'lightgrey';
+	b9.style.backgroundColor = 'lightgrey';
+};
+
+btnNewGame.addEventListener('click',() => {
+	setEmptyButtons();
+	EnableButtons();
+	setButtonsDefaultBackColor();
+	drawCount = 0;
+	noWin = true;
+});
+
+
+
+/* Against Computer Logic */
+let randomPick = Math.floor(Math.random*9+1);
