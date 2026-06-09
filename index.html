@@ -236,7 +236,7 @@
         let gameState = Array(9).fill("");
         let scores = { X: 0, O: 0, draws: 0 };
 
-        // Written as strings to completely bypass platform syntax filtering
+        // Safe format: String paths to bypass platform text-stripping bugs completely
         const winningConditions = [
             "0,1,2", "3,4,5", "6,7,8",
             "0,3,6", "1,4,7", "2,5,8",
@@ -316,4 +316,3 @@
             scoreDrawVal.innerText = scores.draws;
         }
 
-        function handleResetScoreboard() {
