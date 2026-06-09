@@ -32,22 +32,28 @@
         
         #turn-indicator { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         
-        /* CRITICAL FIX: Everything is forced to exact pixel configurations so it cannot stretch */
+        /* THE ULTIMATE FIX: Using isolated Flexbox Rows instead of dynamic Grid tracks */
         .board { 
-            display: grid; 
-            grid-template-columns: repeat(3, 96px); 
-            grid-template-rows: repeat(3, 96px); 
+            display: flex;
+            flex-direction: column;
             gap: 12px; 
             margin: 0 auto 25px auto; 
             width: 312px;
             height: 312px;
             position: relative; 
         }
+
+        /* Hardlocked row containers prevent individual items from collapsing */
+        .board-row {
+            display: flex;
+            gap: 12px;
+            width: 312px;
+            height: 96px;
+        }
         
-        /* CRITICAL FIX: Hardcoded pixel dimensions completely override container behaviors */
         .cell { 
-            width: 96px !important;
-            height: 96px !important;
+            flex: 1;
+            height: 96px;
             background: var(--cell-bg); 
             border-radius: 14px; 
             display: flex; 
@@ -66,7 +72,7 @@
         .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
         .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
         
-        /* Glowing Green Winning Line */
+        /* Glowing Green Winning Line Overlay */
         #win-line {
             position: absolute;
             background: var(--line-color);
@@ -78,7 +84,7 @@
             pointer-events: none;
         }
 
-        /* Calibrated absolute coordinates for the 312px matrix layout */
+        /* Perfectly aligned coordinates for the new row structures */
         .board.show-012 #win-line { display: block; top: 45px; left: 6px; width: 300px; height: 6px; }
         .board.show-345 #win-line { display: block; top: 153px; left: 6px; width: 300px; height: 6px; }
         .board.show-678 #win-line { display: block; top: 261px; left: 6px; width: 300px; height: 6px; }
@@ -109,9 +115,23 @@
         
         <div class="board" id="board">
             <div id="win-line"></div>
-            <div class="cell" data-id="0"></div><div class="cell" data-id="1"></div><div class="cell" data-id="2"></div>
-            <div class="cell" data-id="3"></div><div class="cell" data-id="4"></div><div class="cell" data-id="5"></div>
-            <div class="cell" data-id="6"></div><div class="cell" data-id="7"></div><div class="cell" data-id="8"></div>
+            
+            <!-- Separated into solid physical structural rows -->
+            <div class="board-row">
+                <div class="cell" data-id="0"></div>
+                <div class="cell" data-id="1"></div>
+                <div class="cell" data-id="2"></div>
+            </div>
+            <div class="board-row">
+                <div class="cell" data-id="3"></div>
+                <div class="cell" data-id="4"></div>
+                <div class="cell" data-id="5"></div>
+            </div>
+            <div class="board-row">
+                <div class="cell" data-id="6"></div>
+                <div class="cell" data-id="7"></div>
+                <div class="cell" data-id="8"></div>
+            </div>
         </div>
         
         <div class="controls">
@@ -120,6 +140,7 @@
         </div>
     </div>
     <script>
+        // Tree-order parsing keeps indices 0-8 aligned perfectly
         const cells = Array.from(document.querySelectorAll('.cell'));
         const board = document.getElementById('board');
         const indicator = document.getElementById('turn-indicator');
@@ -155,7 +176,7 @@
                 scores[player]++;
                 document.querySelector(`#score-${player.toLowerCase()} .val`).textContent = scores[player];
                 
-                // Forces the line color to stay green regardless of who wins
+                // Displays the striking glowing green win pattern line
                 board.style.setProperty('--line-color', 'var(--color-draw)');
                 board.classList.add('show-' + winningPattern);
                 
