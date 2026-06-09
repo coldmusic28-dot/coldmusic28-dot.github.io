@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 380px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.score-box {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #555;
+}
+
+.score-box span:last-child {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-top: 5px;
+}
+
+#turn-indicator {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background: #e9ecef;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.cell:hover:not(.taken) {
+    background: #dee2e6;
+}
+
+.cell.taken {
+    cursor: not-allowed;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    transition: background 0.3s;
+}
+
+#restart-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#restart-btn:hover {
+    background-color: #0056b3;
+}
+
+#reset-scoreboard-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+#reset-scoreboard-btn:hover {
+    background-color: #bd2130;
+}
