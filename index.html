@@ -13,7 +13,7 @@
             --text-muted: #94a3b8;
             --color-x: #38bdf8;
             --color-o: #f43f5e;
-            --color-draw: #10b981;
+            --color-draw: #10b981; /* Glowing Green */
             --accent: #6366f1;
             --line-color: #10b981;
         }
@@ -32,19 +32,22 @@
         
         #turn-indicator { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         
-        /* FIX: Locked to an absolute 320px square box so it cannot be vertically squished */
+        /* CRITICAL FIX: Everything is forced to exact pixel configurations so it cannot stretch */
         .board { 
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            grid-template-rows: repeat(3, 1fr); 
+            grid-template-columns: repeat(3, 96px); 
+            grid-template-rows: repeat(3, 96px); 
             gap: 12px; 
             margin: 0 auto 25px auto; 
-            width: 320px;
-            height: 320px;
+            width: 312px;
+            height: 312px;
             position: relative; 
         }
         
+        /* CRITICAL FIX: Hardcoded pixel dimensions completely override container behaviors */
         .cell { 
+            width: 96px !important;
+            height: 96px !important;
             background: var(--cell-bg); 
             border-radius: 14px; 
             display: flex; 
@@ -63,7 +66,7 @@
         .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
         .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
         
-        /* Glowing Winning Line */
+        /* Glowing Green Winning Line */
         #win-line {
             position: absolute;
             background: var(--line-color);
@@ -75,17 +78,17 @@
             pointer-events: none;
         }
 
-        /* Line Placements calibrated for the fixed 320px board size */
-        .board.show-012 #win-line { display: block; top: 15.5%; left: 5%; width: 90%; height: 6px; }
-        .board.show-345 #win-line { display: block; top: 50%; left: 5%; width: 90%; height: 6px; transform: translateY(-50%); }
-        .board.show-678 #win-line { display: block; bottom: 15.5%; left: 5%; width: 90%; height: 6px; }
+        /* Calibrated absolute coordinates for the 312px matrix layout */
+        .board.show-012 #win-line { display: block; top: 45px; left: 6px; width: 300px; height: 6px; }
+        .board.show-345 #win-line { display: block; top: 153px; left: 6px; width: 300px; height: 6px; }
+        .board.show-678 #win-line { display: block; top: 261px; left: 6px; width: 300px; height: 6px; }
         
-        .board.show-036 #win-line { display: block; left: 15.5%; top: 5%; height: 90%; width: 6px; }
-        .board.show-147 #win-line { display: block; left: 50%; top: 5%; height: 90%; width: 6px; transform: translateX(-50%); }
-        .board.show-258 #win-line { display: block; right: 15.5%; top: 5%; height: 90%; width: 6px; }
+        .board.show-036 #win-line { display: block; left: 45px; top: 6px; height: 300px; width: 6px; }
+        .board.show-147 #win-line { display: block; left: 153px; top: 6px; height: 300px; width: 6px; }
+        .board.show-258 #win-line { display: block; left: 261px; top: 6px; height: 300px; width: 6px; }
         
-        .board.show-048 #win-line { display: block; top: 5%; left: 5%; width: 125%; height: 6px; transform: rotate(45deg); transform-origin: top left; }
-        .board.show-246 #win-line { display: block; top: 5%; right: 5%; width: 125%; height: 6px; transform: rotate(-45deg); transform-origin: top right; }
+        .board.show-048 #win-line { display: block; top: 6px; left: 6px; width: 420px; height: 6px; transform: rotate(45deg); transform-origin: top left; }
+        .board.show-246 #win-line { display: block; top: 6px; right: 6px; width: 420px; height: 6px; transform: rotate(-45deg); transform-origin: top right; }
 
         .controls { display: flex; flex-direction: column; gap: 10px; }
         button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
@@ -152,7 +155,7 @@
                 scores[player]++;
                 document.querySelector(`#score-${player.toLowerCase()} .val`).textContent = scores[player];
                 
-                // Displays the striking vibrant green pattern connection line
+                // Forces the line color to stay green regardless of who wins
                 board.style.setProperty('--line-color', 'var(--color-draw)');
                 board.classList.add('show-' + winningPattern);
                 
