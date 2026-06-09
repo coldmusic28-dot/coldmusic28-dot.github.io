@@ -4,7 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe - Retro Cyber</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --cell-bg: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --color-x: #38bdf8;
+            --color-o: #f43f5e;
+            --color-draw: #10b981;
+            --accent: #6366f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #475569;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--color-x), var(--color-o));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .score-box {
+            background: #0f172a80;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .score-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .score-box .val {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #score-x .val { color: var(--color-x); }
+        #score-draw .val { color: var(--color-draw); }
+        #score-o .val { color: var(--color-o); }
+
+        #turn-indicator {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            min-height: 27px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .cell {
+            background: var(--cell-bg);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+
+        .cell:hover:not(.taken) {
+            background: #475569;
+            transform: scale(1.03);
+            border-color: #64748b;
+        }
+
+        .cell.taken {
+            cursor: not-allowed;
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .cell.p-x {
+            color: var(--color-x);
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .cell.p-o {
+            color: var(--color-o);
+            text-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #restart-btn {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        #restart-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+
+        #reset-scoreboard-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #334155;
+        }
+
+        #reset-scoreboard-btn:hover {
+            background: #ef444415;
+            color: #ef4444;
+            border-color: #ef444450;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -48,6 +224,92 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <script>
+        const cellElements = document.querySelectorAll('.cell');
+        const turnIndicator = document.getElementById('turn-indicator');
+        const restartBtn = document.getElementById('restart-btn');
+        const resetScoreboardBtn = document.getElementById('reset-scoreboard-btn');
+
+        const scoreXVal = document.querySelector('#score-x .val');
+        const scoreOVal = document.querySelector('#score-o .val');
+        const scoreDrawVal = document.querySelector('#score-draw .val');
+
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let gameState = ["", "", "", "", "", "", "", "", ""];
+        let scores = { X: 0, O: 0, draws: 0 };
+
+        function handleCellClick(e) {
+            const clickedCell = e.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== "" || !gameActive) return;
+
+            handleCellPlayed(clickedCell, clickedCellIndex);
+            handleResultValidation();
+        }
+
+        function handleCellPlayed(cell, index) {
+            gameState[index] = currentPlayer;
+            cell.innerText = currentPlayer;
+            cell.classList.add('taken', currentPlayer === 'X' ? 'p-x' : 'p-o');
+        }
+
+        function checkWin() {
+            const s = gameState;
+            
+            // Check Horizontals
+            if (s[0] !== "" && s[0] === s[1] && s[1] === s[2]) return true;
+            if (s[3] !== "" && s[3] === s[4] && s[4] === s[5]) return true;
+            if (s[6] !== "" && s[6] === s[7] && s[7] === s[8]) return true;
+            
+            // Check Verticals
+            if (s[0] !== "" && s[0] === s[3] && s[3] === s[6]) return true;
+            if (s[1] !== "" && s[1] === s[4] && s[4] === s[7]) return true;
+            if (s[2] !== "" && s[2] === s[5] && s[5] === s[8]) return true;
+            
+            // Check Diagonals
+            if (s[0] !== "" && s[0] === s[4] && s[4] === s[8]) return true;
+            if (s[2] !== "" && s[2] === s[4] && s[4] === s[6]) return true;
+            
+            return false;
+        }
+
+        function handleResultValidation() {
+            if (checkWin()) {
+                turnIndicator.innerHTML = `Player <span style="color: var(--color-${currentPlayer.toLowerCase()})">${currentPlayer}</span> Wins!`;
+                scores[currentPlayer]++;
+                updateScoreboard();
+                gameActive = false;
+                return;
+            }
+
+            if (!gameState.includes("")) {
+                turnIndicator.innerHTML = `<span style="color: var(--color-draw)">It's a Draw!</span>`;
+                scores.draws++;
+                updateScoreboard();
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            turnIndicator.innerHTML = `Player <span style="color: var(--color-${currentPlayer.toLowerCase()})">${currentPlayer}</span>'s Turn`;
+        }
+
+        function handleRestartGame() {
+            gameActive = true;
+            currentPlayer = "X";
+            gameState = ["", "", "", "", "", "", "", "", ""];
+            turnIndicator.innerHTML = `Player <span style="color: var(--color-x)">X</span>'s Turn`;
+            cellElements.forEach(cell => {
+                cell.innerText = "";
+                cell.className = "cell";
+            });
+        }
+
+        function updateScoreboard() {
+            scoreXVal.innerText = scores.X;
+            scoreOVal.innerText = scores.O;
+            scoreDrawVal.innerText = scores.draws;
+        }
+
