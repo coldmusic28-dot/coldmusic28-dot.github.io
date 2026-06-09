@@ -1,53 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-	</style>
-	<link href='styles.css' rel='stylesheet' />
-	<title>TicTacToe</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe with Scoreboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div id='main-container'>		
-		<div id='sub-main-container'>
-		  <div id='scores'>
-				<div>
-					<p>Player X Score: <span id='x-score'>0</span></p>
-					<p>Player O Score: <span id='y-score'>0</span></p>
-				</div>
-				<div id='against-box'>
-					<button>
-						<p>Against Computer</p>
-					</button>
-					<button>
-						<p>Against Human</p>
-					</button>				
-				</div>
-			</div>
-			<div id='main-player'>
-				<p>Current Player: <span id='current-player'>X</span></p>
-				<div id='btn-controls'>
-					<button id='btn-pic'><img src='colorMode.png' id='pic-img'></button>
-					<button id='new-game'>New Game</button>
-				</div>
-			</div>
-			<div id='row-1' class='rows'>
-				<button class='btn b1'></button>
-				<button class='btn b2'></button>
-				<button class='btn b3'></button>
-			</div>
-			<div id='row-2' class='rows'>
-				<button class='btn b4'></button>
-				<button class='btn b5'></button>
-				<button class='btn b6'></button>
-			</div>			
-			<div id='row-3' class='rows'>
-				<button class='btn b7'></button>
-				<button class='btn b8'></button>
-				<button class='btn b9'></button>
-			</div>	
-		</div>			
-	</div>
-	<script src='script.js'></script>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+            <div class="score-box">
+                <span>Player X</span>
+                <span id="score-x">0</span>
+            </div>
+            <div class="score-box">
+                <span>Draws</span>
+                <span id="score-draw">0</span>
+            </div>
+            <div class="score-box">
+                <span>Player O</span>
+                <span id="score-o">0</span>
+            </div>
+        </div>
+
+        <h2 id="turn-indicator">Player X's Turn</h2>
+        
+        <!-- Board -->
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <button id="restart-btn">Restart Game</button>
+        <button id="reset-scoreboard-btn">Reset Scoreboard</button>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
