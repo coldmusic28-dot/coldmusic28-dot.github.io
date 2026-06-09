@@ -13,18 +13,18 @@ let gameState = ["", "", "", "", "", "", "", "", ""];
 
 let scores = { X: 0, O: 0, draws: 0 };
 
-// FIXED: Restored all missing board grid numbers completely
+// The 8 possible winning combinations on a 3x3 grid
 const winningConditions = [
-   [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal rows
-   [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertical columns
-   [0, 4, 8], [2, 4, 6]             // Diagonal lines
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertical columns
+    [0, 4, 8], [2, 4, 6]             // Diagonal lines
 ];
 
 function handleCellClick(e) {
     const clickedCell = e.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
-    // Stops clicks if the spot is already taken or if the match has ended
+    // Block the click if the cell is occupied or the round is over
     if (gameState[clickedCellIndex] !== "" || !gameActive) return;
 
     handleCellPlayed(clickedCell, clickedCellIndex);
@@ -39,9 +39,18 @@ function handleCellPlayed(cell, index) {
 
 function handleResultValidation() {
     let roundWon = false;
+
+    // Loop through each winning condition and extract the 3 individual cell indices
     for (let i = 0; i < winningConditions.length; i++) {
-        const [a, b, c] = winningConditions[i];
-        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+        const condition = winningConditions[i];
+        let a = gameState[condition[0]];
+        let b = gameState[condition[1]];
+        let c = gameState[condition[2]];
+        
+        if (a === '' || b === '' || c === '') {
+            continue;
+        }
+        if (a === b && b === c) {
             roundWon = true;
             break;
         }
@@ -55,7 +64,9 @@ function handleResultValidation() {
         return;
     }
 
-    if (!gameState.includes("")) {
+    // Check if there are any empty spaces left on the board
+    let roundDraw = !gameState.includes("");
+    if (roundDraw) {
         turnIndicator.innerHTML = `<span style="color: var(--color-draw)">It's a Draw!</span>`;
         scores.draws++;
         updateScoreboard();
@@ -63,6 +74,7 @@ function handleResultValidation() {
         return;
     }
 
+    // Switch turns
     currentPlayer = currentPlayer === "X" ? "O" : "X";
     turnIndicator.innerHTML = `Player <span style="color: var(--color-${currentPlayer.toLowerCase()})">${currentPlayer}</span>'s Turn`;
 }
@@ -90,6 +102,7 @@ function handleResetScoreboard() {
     handleRestartGame();
 }
 
+// Event Listeners
 cellElements.forEach(cell => cell.addEventListener('click', handleCellClick));
 restartBtn.addEventListener('click', handleRestartGame);
 resetScoreboardBtn.addEventListener('click', handleResetScoreboard);
