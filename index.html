@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <div class="container" id="game-container" data-turn="X">
+    <div class="container">
         <h1>Tic Tac Toe</h1>
         <span class="sig">Made by Quluzade Ibrahim</span>
         <div class="scoreboard">
@@ -47,11 +47,11 @@
         <button id="reset-scoreboard-btn">Wipe Memory</button>
     </div>
     <script>
-        const root = document.getElementById('game-container'), board = document.getElementById('board'), turnLabel = document.getElementById('turn-text');
+        const board = document.getElementById('board'), turnLabel = document.getElementById('turn-text');
         const c0 = document.getElementById("c0"), c1 = document.getElementById("c1"), c2 = document.getElementById("c2");
         const c3 = document.getElementById("c3"), c4 = document.getElementById("c4"), c5 = document.getElementById("c5");
         const c6 = document.getElementById("c6"), c7 = document.getElementById("c7"), c8 = document.getElementById("c8");
-        let sx = 0, so = 0, sd = 0, active = true;
+        let turn = 'X', sx = 0, so = 0, sd = 0, active = true;
 
         function h(x, y, z) { x.classList.add('winner-highlight'); y.classList.add('winner-highlight'); z.classList.add('winner-highlight'); }
 
@@ -82,16 +82,20 @@
 
         board.addEventListener('click', (e) => {
             if (!active || !e.target.classList.contains('cell') || e.target.textContent !== "") return;
-            const cur = root.getAttribute('data-turn');
-            e.target.textContent = cur; e.target.classList.add('taken', cur === 'X' ? 'p-x' : 'p-o');
+            
+            // Turn variables tracked purely inside local script memory avoids tracking state bugs
+            e.target.textContent = turn; 
+            e.target.classList.add('taken', turn === 'X' ? 'p-x' : 'p-o');
+            
             if (!checkWinner()) {
-                const next = cur === 'X' ? 'O' : 'X'; root.setAttribute('data-turn', next);
-                turnLabel.textContent = next + "_TURN"; turnLabel.style.color = next === 'X' ? 'var(--x)' : 'var(--o)';
+                turn = (turn === 'X') ? 'O' : 'X';
+                turnLabel.textContent = turn + "_TURN"; 
+                turnLabel.style.color = (turn === 'X') ? 'var(--x)' : 'var(--o)';
             }
         });
 
         document.getElementById('restart-btn').addEventListener('click', () => {
-            active = true; root.setAttribute('data-turn', 'X');
+            active = true; turn = 'X';
             document.getElementById('turn-indicator').innerHTML = `STATUS: <span id="turn-text" style="color:var(--x)">X_TURN</span>`;
             window.turnLabel = document.getElementById('turn-text');
             [c0,c1,c2,c3,c4,c5,c6,c7,c8].forEach(c => { c.textContent = ""; c.className = "cell"; });
