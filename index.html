@@ -19,10 +19,21 @@
         * { box-sizing: border-box; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .container { text-align: center; background: var(--container-bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #475569; position: relative; }
-        h1 { font-size: 2rem; margin-bottom: 5px; background: linear-gradient(to right, var(--color-x), var(--color-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
         
-        /* Author Credit Styling */
-        .credit { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500; letter-spacing: 0.3px; }
+        /* HEADER REWRITTEN TO FORCE YOUR INJECTION CREDIT BLOCK VIA CSS */
+        h1 { font-size: 2rem; margin-bottom: 0px !important; background: linear-gradient(to right, var(--color-x), var(--color-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; display: inline-block; }
+        h1::after {
+            content: "Made by Quluzade Ibrahim" !important;
+            display: block !important;
+            font-size: 0.85rem !important;
+            color: var(--text-muted) !important;
+            -webkit-text-fill-color: var(--text-muted) !important;
+            margin-top: 6px !important;
+            margin-bottom: 25px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.3px !important;
+            text-align: center !important;
+        }
         
         .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
         .score-box { background: #0f172a80; padding: 12px; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; }
@@ -34,7 +45,6 @@
         
         #turn-indicator { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         
-        /* UNBREAKABLE MATRIX: Flex layout combined with hard-coded pixel widths on row containers */
         .board { 
             display: flex !important;
             flex-direction: column !important;
@@ -44,7 +54,6 @@
             height: 312px !important;
         }
 
-        /* Fixed structural row containers enforce cell boundaries */
         .board-row {
             display: flex !important;
             gap: 12px !important;
@@ -52,7 +61,6 @@
             height: 96px !important;
         }
         
-        /* Perfect square hardcoded styling ignores engine collapses */
         .cell { 
             width: 96px !important;
             height: 96px !important;
@@ -74,7 +82,6 @@
         .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
         .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
         
-        /* Glowing Winner Highlights */
         .cell.winner-highlight {
             background: rgba(16, 185, 129, 0.2) !important;
             border-color: var(--color-draw) !important;
@@ -98,7 +105,6 @@
 <body>
     <div class="container">
         <h1>Tic Tac Toe</h1>
-        <div class="credit">Made by Quluzade Ibrahim</div>
         
         <div class="scoreboard">
             <div class="score-box" id="score-x"><span class="label">Player X</span><span class="val">0</span></div>
