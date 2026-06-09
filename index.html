@@ -20,30 +20,9 @@
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .container { text-align: center; background: var(--container-bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #475569; position: relative; }
         
-        /* Heading & Credit Container */
-        .title-group {
-            margin-bottom: 25px;
-        }
-        h1 { 
-            font-size: 2rem; 
-            background: linear-gradient(to right, var(--color-x), var(--color-o)); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            font-weight: 800; 
-            display: block;
-            line-height: 1.2;
-        }
-        /* Hard-locked Signature Text Wrapper */
-        .signature-text {
-            display: block !important;
-            visibility: visible !important;
-            font-size: 0.85rem !important;
-            color: var(--text-muted) !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.3px !important;
-            margin-top: 6px !important;
-            text-align: center !important;
-        }
+        .title-group { margin-bottom: 25px; }
+        h1 { font-size: 2rem; background: linear-gradient(to right, var(--color-x), var(--color-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; display: block; line-height: 1.2; }
+        .signature-text { display: block !important; visibility: visible !important; font-size: 0.85rem !important; color: var(--text-muted) !important; font-weight: 500 !important; letter-spacing: 0.3px !important; margin-top: 6px !important; text-align: center !important; }
         
         .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
         .score-box { background: #0f172a80; padding: 12px; border-radius: 12px; border: 1px solid #334155; display: flex; flex-direction: column; }
@@ -55,56 +34,17 @@
         
         #turn-indicator { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         
-        .board { 
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 12px !important;
-            margin: 0 auto 25px auto !important; 
-            width: 312px !important;
-            height: 312px !important;
-        }
-
-        .board-row {
-            display: flex !important;
-            gap: 12px !important;
-            width: 312px !important;
-            height: 96px !important;
-        }
+        .board { display: flex !important; flex-direction: column !important; gap: 12px !important; margin: 0 auto 25px auto !important; width: 312px !important; height: 312px !important; }
+        .board-row { display: flex !important; gap: 12px !important; width: 312px !important; height: 96px !important; }
         
-        .cell { 
-            width: 96px !important;
-            height: 96px !important;
-            background: var(--cell-bg); 
-            border-radius: 14px; 
-            display: flex !important; 
-            align-items: center !important; 
-            justify-content: center !important; 
-            font-size: 2.75rem; 
-            font-weight: 800; 
-            cursor: pointer; 
-            user-select: none; 
-            border: 1px solid transparent; 
-            transition: all 0.2s ease; 
-        }
-        
+        .cell { width: 96px !important; height: 96px !important; background: var(--cell-bg); border-radius: 14px; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 2.75rem; font-weight: 800; cursor: pointer; user-select: none; border: 1px solid transparent; transition: all 0.2s ease; }
         .cell:hover:not(.taken) { background: #475569; transform: scale(1.02); }
         .cell.taken { cursor: not-allowed; background: #1e293b; border-color: #334155; }
         .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
         .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
         
-        .cell.winner-highlight {
-            background: rgba(16, 185, 129, 0.2) !important;
-            border-color: var(--color-draw) !important;
-            color: var(--color-draw) !important;
-            text-shadow: 0 0 16px var(--color-draw) !important;
-            animation: pulseGlow 1.5s infinite ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); transform: scale(1.03); }
-        }
-
+        .cell.winner-highlight { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--color-draw) !important; color: var(--color-draw) !important; text-shadow: 0 0 16px var(--color-draw) !important; animation: pulseGlow 1.5s infinite ease-in-out; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.2); } 50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); transform: scale(1.03); } }
         .controls { display: flex; flex-direction: column; gap: 10px; }
         button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
         #restart-btn { background: var(--accent); color: white; }
@@ -114,7 +54,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Integrated Header Group Block -->
         <div class="title-group">
             <h1>Tic Tac Toe</h1>
             <span class="signature-text">Made by Quluzade Ibrahim</span>
@@ -129,19 +68,19 @@
         
         <div class="board" id="board">
             <div class="board-row">
-                <div class="cell" data-id="0"></div>
-                <div class="cell" data-id="1"></div>
-                <div class="cell" data-id="2"></div>
+                <div class="cell" id="c0"></div>
+                <div class="cell" id="c1"></div>
+                <div class="cell" id="c2"></div>
             </div>
             <div class="board-row">
-                <div class="cell" data-id="3"></div>
-                <div class="cell" data-id="4"></div>
-                <div class="cell" data-id="5"></div>
+                <div class="cell" id="c3"></div>
+                <div class="cell" id="c4"></div>
+                <div class="cell" id="c5"></div>
             </div>
             <div class="board-row">
-                <div class="cell" data-id="6"></div>
-                <div class="cell" data-id="7"></div>
-                <div class="cell" data-id="8"></div>
+                <div class="cell" id="c6"></div>
+                <div class="cell" id="c7"></div>
+                <div class="cell" id="c8"></div>
             </div>
         </div>
         
@@ -151,29 +90,31 @@
         </div>
     </div>
     <script>
-        const cells = Array.from(document.querySelectorAll('.cell'));
+        const cells = [
+            document.getElementById("c0"), document.getElementById("c1"), document.getElementById("c2"),
+            document.getElementById("c3"), document.getElementById("c4"), document.getElementById("c5"),
+            document.getElementById("c6"), document.getElementById("c7"), document.getElementById("c8")
+        ];
         const board = document.getElementById('board');
         const indicator = document.getElementById('turn-indicator');
         let player = 'X';
         let active = true;
         let scores = { X: 0, O: 0, draws: 0 };
-        let winningCombination = [];
+        let winCombo = [];
 
         function checkWin() {
-            const vals = cells.map(c => c.textContent);
-            const patterns = ["012","345","678","036","147","258","048","246"];
+            const v = cells.map(c => c.textContent);
             
-            return patterns.some(p => {
-                const posA = parseInt(p.at(0));
-                const posB = parseInt(p.at(1));
-                const posC = parseInt(p.at(2));
-                
-                if (vals.at(posA) !== "" && vals.at(posA) === vals.at(posB) && vals.at(posA) === vals.at(posC)) {
-                    winningCombination = [posA, posB, posC];
-                    return true;
-                }
-                return false;
-            });
+            // Hardcoded manual checks completely eliminate string/array processing lookup crashes
+            if (v[0] !== "" && v[0] === v[1] && v[0] === v[2]) { winCombo = [0, 1, 2]; return true; }
+            if (v[3] !== "" && v[3] === v[4] && v[3] === v[5]) { winCombo = [3, 4, 5]; return true; }
+            if (v[6] !== "" && v[6] === v[7] && v[6] === v[8]) { winCombo = [6, 7, 8]; return true; }
+            if (v[0] !== "" && v[0] === v[3] && v[0] === v[6]) { winCombo = [0, 3, 6]; return true; }
+            if (v[1] !== "" && v[1] === v[4] && v[1] === v[7]) { winCombo = [1, 4, 7]; return true; }
+            if (v[2] !== "" && v[2] === v[5] && v[2] === v[8]) { winCombo = [2, 5, 8]; return true; }
+            if (v[0] !== "" && v[0] === v[4] && v[0] === v[8]) { winCombo = [0, 4, 8]; return true; }
+            if (v[2] !== "" && v[2] === v[4] && v[2] === v[6]) { winCombo = [2, 4, 6]; return true; }
+            return false;
         }
 
         board.addEventListener('click', (e) => {
@@ -186,11 +127,7 @@
                 indicator.innerHTML = `Player <span style="color: var(--color-${player.toLowerCase()})">${player}</span> Wins!`;
                 scores[player]++;
                 document.querySelector(`#score-${player.toLowerCase()} .val`).textContent = scores[player];
-                
-                winningCombination.forEach(index => {
-                    cells.at(index).classList.add('winner-highlight');
-                });
-                
+                winCombo.forEach(i => cells[i].classList.add('winner-highlight'));
                 active = false;
                 return;
             }
@@ -211,7 +148,7 @@
             active = true;
             player = 'X';
             indicator.innerHTML = "Player <span style=\"color: var(--color-x)\">X</span>'s Turn";
-            winningCombination = [];
+            winCombo = [];
             cells.forEach(c => { c.textContent = ""; c.className = "cell"; });
         });
 
