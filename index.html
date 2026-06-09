@@ -5,44 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <style>
-        :root {
-            --bg-color: #1e2530;
-            --container-bg: #1a1f29;
-            --cell-bg: #2a3547;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --color-x: #38bdf8;
-            --color-o: #f43f5e;
-            --color-draw: #10b981;
-            --accent: #6366f1;
-        }
+        :root { --bg: #1e2530; --panel: #1a1f29; --cell: #2a3547; --text: #f8fafc; --muted: #94a3b8; --x: #38bdf8; --o: #f43f5e; --win: #10b981; --accent: #6366f1; }
         * { box-sizing: border-box; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { text-align: center; background: var(--container-bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #2d3748; }
+        body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { text-align: center; background: var(--panel); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #2d3748; }
         .title-group { margin-bottom: 25px; }
-        h1 { font-size: 2.2rem; background: linear-gradient(to right, var(--color-x), var(--color-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; display: block; line-height: 1.2; }
-        .signature-text { display: block; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.3px; margin-top: 6px; }
+        h1 { font-size: 2.2rem; background: linear-gradient(to right, var(--x), var(--o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; display: block; line-height: 1.2; }
+        .signature-text { display: block; font-size: 0.9rem; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; margin-top: 6px; }
         .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 25px; }
         .score-box { background: rgba(15, 23, 42, 0.4); padding: 12px; border-radius: 12px; border: 1px solid #2d3748; display: flex; flex-direction: column; }
-        .label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px; }
+        .label { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 0.5px; }
         .val { font-size: 1.6rem; font-weight: 700; margin-top: 4px; }
-        #score-x .val { color: var(--color-x); }
-        #score-draw .val { color: var(--color-draw); }
-        #score-o .val { color: var(--color-o); }
+        #score-x .val { color: var(--x); } #score-draw .val { color: var(--win); } #score-o .val { color: var(--o); }
         #turn-indicator { font-size: 1.2rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         .board { display: flex; flex-direction: column; gap: 12px; margin: 0 auto 25px auto; width: 312px; height: 312px; }
         .board-row { display: flex; gap: 12px; width: 312px; height: 96px; }
-        .cell { width: 96px; height: 96px; background: var(--cell-bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.75rem; font-weight: 800; cursor: pointer; user-select: none; border: 1px solid transparent; transition: all 0.2s ease; }
+        .cell { width: 96px; height: 96px; background: var(--cell); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.75rem; font-weight: 800; cursor: pointer; user-select: none; border: 1px solid transparent; transition: all 0.2s ease; }
         .cell:hover:not(.taken) { background: #3b4a63; transform: scale(1.02); }
         .cell.taken { cursor: not-allowed; background: rgba(15, 23, 42, 0.6); border-color: #2d3748; }
-        .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
-        .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.5); }
-        .cell.winner-highlight { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--color-draw) !important; color: var(--color-draw) !important; text-shadow: 0 0 16px var(--color-draw) !important; }
+        .cell.p-x { color: var(--x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+        .cell.p-o { color: var(--o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.5); }
+        .cell.winner-highlight { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--win) !important; color: var(--win) !important; text-shadow: 0 0 16px var(--win) !important; }
         .controls { display: flex; flex-direction: column; gap: 10px; }
         button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
         #restart-btn { background: var(--accent); color: white; }
         #restart-btn:hover { background: #4f46e5; }
-        #reset-scoreboard-btn { background: transparent; color: var(--text-muted); border: 1px solid #2d3748; }
+        #reset-scoreboard-btn { background: transparent; color: var(--muted); border: 1px solid #2d3748; }
         #reset-scoreboard-btn:hover { color: #ef4444; background: #ef444415; border-color: rgba(239, 68, 68, 0.3); }
     </style>
 </head>
@@ -57,7 +45,7 @@
             <div class="score-box" id="score-draw"><span class="label">Draws</span><span class="val" id="val-draw">0</span></div>
             <div class="score-box" id="score-o"><span class="label">Player O</span><span class="val" id="val-o">0</span></div>
         </div>
-        <div id="turn-indicator">Player <span id="turn-text" style="color: var(--color-x)">X</span>'s Turn</div>
+        <div id="turn-indicator">Player <span id="turn-text" style="color: var(--x)">X</span>'s Turn</div>
         <div class="board" id="board">
             <div class="board-row">
                 <div class="cell" id="c0"></div><div class="cell" id="c1"></div><div class="cell" id="c2"></div>
@@ -75,63 +63,51 @@
         </div>
     </div>
     <script>
-        const root = document.getElementById('game-container');
-        const board = document.getElementById('board');
-        const turnLabel = document.getElementById('turn-text');
-        const cells = ["c0","c1","c2","c3","c4","c5","c6","c7","c8"].map(id => document.getElementById(id));
-        let scores = { X: 0, O: 0, draws: 0 }, gameActive = true;
+        const root = document.getElementById('game-container'), board = document.getElementById('board'), turnLabel = document.getElementById('turn-text');
+        const c0 = document.getElementById("c0"), c1 = document.getElementById("c1"), c2 = document.getElementById("c2");
+        const c3 = document.getElementById("c3"), c4 = document.getElementById("c4"), c5 = document.getElementById("c5");
+        const c6 = document.getElementById("c6"), c7 = document.getElementById("c7"), c8 = document.getElementById("c8");
+        const cells = [c0, c1, c2, c3, c4, c5, c6, c7, c8];
+        let scores = { X: 0, O: 0, draws: 0 }, active = true;
 
         function checkWinner() {
-            let winMark = "";
-            const lines = [, [3,4,5], [6,7,8],
-, [1,4,7], [2,5,8],
-, [2,4,6]
-            ];
-            for (let i = 0; i < lines.length; i++) {
-                const [a, b, c] = lines[i];
-                if (cells[a].textContent !== "" && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
-                    winMark = cells[a].textContent;
-                    cells[a].classList.add('winner-highlight');
-                    cells[b].classList.add('winner-highlight');
-                    cells[c].classList.add('winner-highlight');
-                    break;
-                }
-            }
-            if (winMark !== "") {
-                document.getElementById('turn-indicator').innerHTML = `Player <span style="color:var(--color-${winMark.toLowerCase()})">${winMark}</span> Wins!`;
-                scores[winMark]++;
-                document.getElementById(`val-${winMark.toLowerCase()}`).textContent = scores[winMark];
-                gameActive = false;
-                return true;
+            let mark = "";
+            const h = (x, y, z) => { x.classList.add('winner-highlight'); y.classList.add('winner-highlight'); z.classList.add('winner-highlight'); };
+            if (c0.textContent !== "" && c0.textContent === c1.textContent && c0.textContent === c2.textContent) { mark = c0.textContent; h(c0, c1, c2); }
+            else if (c3.textContent !== "" && c3.textContent === c4.textContent && c3.textContent === c5.textContent) { mark = c3.textContent; h(c3, c4, c5); }
+            else if (c6.textContent !== "" && c6.textContent === c7.textContent && c6.textContent === c8.textContent) { mark = c6.textContent; h(c6, c7, c8); }
+            else if (c0.textContent !== "" && c0.textContent === c3.textContent && c0.textContent === c6.textContent) { mark = c0.textContent; h(c0, c3, c6); }
+            else if (c1.textContent !== "" && c1.textContent === c4.textContent && c1.textContent === c7.textContent) { mark = c1.textContent; h(c1, c4, c7); }
+            else if (c2.textContent !== "" && c2.textContent === c5.textContent && c2.textContent === c8.textContent) { mark = c2.textContent; h(c2, c5, c8); }
+            else if (c0.textContent !== "" && c0.textContent === c4.textContent && c0.textContent === c8.textContent) { mark = c0.textContent; h(c0, c4, c8); }
+            else if (c2.textContent !== "" && c2.textContent === c4.textContent && c2.textContent === c6.textContent) { mark = c2.textContent; h(c2, c4, c6); }
+
+            if (mark !== "") {
+                document.getElementById('turn-indicator').innerHTML = `Player <span style="color:var(--${mark.toLowerCase()})">${mark}</span> Wins!`;
+                scores[mark]++; document.getElementById(`val-${mark.toLowerCase()}`).textContent = scores[mark];
+                active = false; return true;
             }
             if (cells.every(c => c.textContent !== "")) {
-                document.getElementById('turn-indicator').innerHTML = `<span style="color:var(--color-draw)">It's a Draw!</span>`;
-                scores.draws++;
-                document.getElementById('val-draw').textContent = scores.draws;
-                gameActive = false;
-                return true;
+                document.getElementById('turn-indicator').innerHTML = `<span style="color:var(--win)">It's a Draw!</span>`;
+                scores.draws++; document.getElementById('val-draw').textContent = scores.draws;
+                active = false; return true;
             }
             return false;
         }
 
         board.addEventListener('click', (e) => {
-            if (!gameActive || !e.target.classList.contains('cell') || e.target.textContent !== "") return;
+            if (!active || !e.target.classList.contains('cell') || e.target.textContent !== "") return;
             const cur = root.getAttribute('data-turn');
-            e.target.textContent = cur;
-            e.target.classList.add('taken', cur === 'X' ? 'p-x' : 'p-o');
-            
+            e.target.textContent = cur; e.target.classList.add('taken', cur === 'X' ? 'p-x' : 'p-o');
             if (!checkWinner()) {
-                const next = cur === 'X' ? 'O' : 'X';
-                root.setAttribute('data-turn', next);
-                turnLabel.textContent = next;
-                turnLabel.style.color = next === 'X' ? 'var(--color-x)' : 'var(--color-o)';
+                const next = cur === 'X' ? 'O' : 'X'; root.setAttribute('data-turn', next);
+                turnLabel.textContent = next; turnLabel.style.color = next === 'X' ? 'var(--x)' : 'var(--o)';
             }
         });
 
         document.getElementById('restart-btn').addEventListener('click', () => {
-            gameActive = true;
-            root.setAttribute('data-turn', 'X');
-            document.getElementById('turn-indicator').innerHTML = `Player <span id="turn-text" style="color:var(--color-x)">X</span>'s Turn`;
+            active = true; root.setAttribute('data-turn', 'X');
+            document.getElementById('turn-indicator').innerHTML = `Player <span id="turn-text" style="color:var(--x)">X</span>'s Turn`;
             window.turnLabel = document.getElementById('turn-text');
             cells.forEach(c => { c.textContent = ""; c.className = "cell"; });
         });
