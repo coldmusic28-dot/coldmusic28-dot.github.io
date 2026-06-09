@@ -20,18 +20,28 @@
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .container { text-align: center; background: var(--container-bg); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #475569; position: relative; }
         
-        /* HEADER REWRITTEN TO FORCE YOUR INJECTION CREDIT BLOCK VIA CSS */
-        h1 { font-size: 2rem; margin-bottom: 0px !important; background: linear-gradient(to right, var(--color-x), var(--color-o)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; display: inline-block; }
-        h1::after {
-            content: "Made by Quluzade Ibrahim" !important;
+        /* Heading & Credit Container */
+        .title-group {
+            margin-bottom: 25px;
+        }
+        h1 { 
+            font-size: 2rem; 
+            background: linear-gradient(to right, var(--color-x), var(--color-o)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            font-weight: 800; 
+            display: block;
+            line-height: 1.2;
+        }
+        /* Hard-locked Signature Text Wrapper */
+        .signature-text {
             display: block !important;
+            visibility: visible !important;
             font-size: 0.85rem !important;
             color: var(--text-muted) !important;
-            -webkit-text-fill-color: var(--text-muted) !important;
-            margin-top: 6px !important;
-            margin-bottom: 25px !important;
             font-weight: 500 !important;
             letter-spacing: 0.3px !important;
+            margin-top: 6px !important;
             text-align: center !important;
         }
         
@@ -104,7 +114,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Tic Tac Toe</h1>
+        <!-- Integrated Header Group Block -->
+        <div class="title-group">
+            <h1>Tic Tac Toe</h1>
+            <span class="signature-text">Made by Quluzade Ibrahim</span>
+        </div>
         
         <div class="scoreboard">
             <div class="score-box" id="score-x"><span class="label">Player X</span><span class="val">0</span></div>
