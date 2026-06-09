@@ -1,46 +1,53 @@
-<!DOCTYPE HTML>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="player-info">
-			<form id="player-info">
-				<label for="player1">Player 1</label>
-				<input id="player1" name="player1" required />
-				<label for="player2">Player 2</label>
-				<input id="player2" name="player2" required/>
-				<button id="submit">Submit</button>
-		
-				<button id="restart" type="button">Restart</button>
-			</form>
-		</div>
-		<div class="game-container">
-			<div id="winnerModal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h3 id="modal-text">hello world</h3>
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+	</style>
+	<link href='styles.css' rel='stylesheet' />
+	<title>TicTacToe</title>
+</head>
+<body>
+	<div id='main-container'>		
+		<div id='sub-main-container'>
+		  <div id='scores'>
+				<div>
+					<p>Player X Score: <span id='x-score'>0</span></p>
+					<p>Player O Score: <span id='y-score'>0</span></p>
+				</div>
+				<div id='against-box'>
+					<button>
+						<p>Against Computer</p>
+					</button>
+					<button>
+						<p>Against Human</p>
+					</button>				
 				</div>
 			</div>
-
-			<h3 id="player1-text" style="display:inline; text-align: left; margin-left: 1em;">Player1</h3>
-			<h3 id="player2-text" style="display:inline; text-align: right; margin-right: 1em">Player2</h3>
-			<div class="game-board">
-				<button class="board-button" id="1"></button>
-				<button class="board-button" id="2"></button>
-				<button class="board-button" id="3"></button>
-				<button class="board-button" id="4"></button>
-				<button class="board-button" id="5"></button>
-				<button class="board-button" id="6"></button>
-				<button class="board-button" id="7"></button>
-				<button class="board-button" id="8"></button>
-				<button class="board-button" id="9"></button>
+			<div id='main-player'>
+				<p>Current Player: <span id='current-player'>X</span></p>
+				<div id='btn-controls'>
+					<button id='btn-pic'><img src='colorMode.png' id='pic-img'></button>
+					<button id='new-game'>New Game</button>
+				</div>
 			</div>
-		</div>
-		<div class="score-board">
-		</div>
-	</body>
-	
-	<script src="script.js"></script>
+			<div id='row-1' class='rows'>
+				<button class='btn b1'></button>
+				<button class='btn b2'></button>
+				<button class='btn b3'></button>
+			</div>
+			<div id='row-2' class='rows'>
+				<button class='btn b4'></button>
+				<button class='btn b5'></button>
+				<button class='btn b6'></button>
+			</div>			
+			<div id='row-3' class='rows'>
+				<button class='btn b7'></button>
+				<button class='btn b8'></button>
+				<button class='btn b9'></button>
+			</div>	
+		</div>			
+	</div>
+	<script src='script.js'></script>
+</body>
 </html>
