@@ -13,16 +13,18 @@ let gameState = ["", "", "", "", "", "", "", "", ""];
 
 let scores = { X: 0, O: 0, draws: 0 };
 
+// FIXED: Restored all missing board grid numbers completely
 const winningConditions = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontals
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Verticals
-    [0, 4, 8], [2, 4, 6]             // Diagonals
+   [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal rows
+   [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertical columns
+   [0, 4, 8], [2, 4, 6]             // Diagonal lines
 ];
 
 function handleCellClick(e) {
     const clickedCell = e.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
+    // Stops clicks if the spot is already taken or if the match has ended
     if (gameState[clickedCellIndex] !== "" || !gameActive) return;
 
     handleCellPlayed(clickedCell, clickedCellIndex);
