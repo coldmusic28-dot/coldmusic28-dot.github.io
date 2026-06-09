@@ -13,17 +13,19 @@
             --text-red: #ef4444;
             --text-green: #10b981;
             --btn-purple: #6366f1;
+            --btn-purple-hover: #4f46e5;
         }
 
         body {
             margin: 0;
+            padding: 0;
+            font-family: sans-serif;
             background-color: var(--bg-color);
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: sans-serif;
         }
 
         .game-container {
@@ -34,6 +36,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .author {
@@ -97,10 +100,18 @@
             font-size: 2.8rem;
             font-weight: bold;
             cursor: pointer;
+            user-select: none;
         }
 
-        .cell.x-mark { color: var(--text-blue); }
-        .cell.o-mark { color: var(--text-red); }
+        .cell.x-mark {
+            color: var(--text-blue);
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .cell.o-mark {
+            color: var(--text-red);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
 
         .btn {
             width: 100%;
@@ -111,10 +122,28 @@
             border-radius: 12px;
             cursor: pointer;
             margin-bottom: 12px;
+            transition: background-color 0.2s;
         }
 
-        .btn-primary { background-color: var(--btn-purple); color: #fff; }
-        .btn-secondary { background-color: transparent; color: #64748b; border: 2px solid #282f3f; margin-bottom: 0; }
+        .btn-primary {
+            background-color: var(--btn-purple);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--btn-purple-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #64748b;
+            border: 2px solid #282f3f;
+            margin-bottom: 0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1f2430;
+        }
     </style>
 </head>
 <body>
@@ -158,11 +187,9 @@
         let gameState = ["", "", "", "", "", "", "", "", ""];
         let gameActive = true;
 
-        // String representation prevents parsing corruption across deliveries
-        const winningConditions = [, [3, 4, 5], [6, 7, 8],
-, [1, 4, 7], [2, 5, 8],
-, [2, 4, 6]
-        ];
+        // Flattened string ensures no markdown format stripping can happen
+        const winPatterns = "0,1,2|3,4,5|6,7,8|0,3,6|1,4,7|2,5,8|0,4,8|2,4,6";
+        const winningConditions = winPatterns.split('|').map(p => p.split(',').map(Number));
 
         cells.forEach(cell => cell.addEventListener('click', (e) => {
             const index = parseInt(e.target.getAttribute('data-index'));
