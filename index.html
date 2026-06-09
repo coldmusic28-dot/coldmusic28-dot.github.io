@@ -13,9 +13,9 @@
             --text-muted: #94a3b8;
             --color-x: #38bdf8;
             --color-o: #f43f5e;
-            --color-draw: #10b981; /* Vibrant Green */
+            --color-draw: #10b981;
             --accent: #6366f1;
-            --line-color: #10b981; /* Default to Green */
+            --line-color: #10b981;
         }
         * { box-sizing: border-box; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -32,18 +32,18 @@
         
         #turn-indicator { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; min-height: 27px; }
         
-        /* FIX: Added grid-template-rows to lock row sizes completely uniform */
+        /* FIX: Locked to an absolute 320px square box so it cannot be vertically squished */
         .board { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             gap: 12px; 
-            margin-bottom: 25px; 
-            aspect-ratio: 1 / 1; 
+            margin: 0 auto 25px auto; 
+            width: 320px;
+            height: 320px;
             position: relative; 
         }
         
-        /* FIX: Added aspect-ratio to keep empty or filled cubes perfectly identical */
         .cell { 
             background: var(--cell-bg); 
             border-radius: 14px; 
@@ -56,7 +56,6 @@
             user-select: none; 
             border: 1px solid transparent; 
             transition: all 0.2s; 
-            aspect-ratio: 1 / 1; 
         }
         
         .cell:hover:not(.taken) { background: #475569; transform: scale(1.02); }
@@ -64,7 +63,7 @@
         .cell.p-x { color: var(--color-x); text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
         .cell.p-o { color: var(--color-o); text-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
         
-        /* Glowing Winning Line Engine */
+        /* Glowing Winning Line */
         #win-line {
             position: absolute;
             background: var(--line-color);
@@ -73,20 +72,20 @@
             display: none;
             border-radius: 10px;
             transition: all 0.3s ease-in-out;
-            pointer-events: none; /* Prevents line from blocking button clicks */
+            pointer-events: none;
         }
 
-        /* Fixed Precise Line Placements */
-        .board.show-012 #win-line { display: block; top: 15%; left: 5%; width: 90%; height: 6px; }
+        /* Line Placements calibrated for the fixed 320px board size */
+        .board.show-012 #win-line { display: block; top: 15.5%; left: 5%; width: 90%; height: 6px; }
         .board.show-345 #win-line { display: block; top: 50%; left: 5%; width: 90%; height: 6px; transform: translateY(-50%); }
-        .board.show-678 #win-line { display: block; bottom: 15%; left: 5%; width: 90%; height: 6px; }
+        .board.show-678 #win-line { display: block; bottom: 15.5%; left: 5%; width: 90%; height: 6px; }
         
-        .board.show-036 #win-line { display: block; left: 15%; top: 5%; height: 90%; width: 6px; }
+        .board.show-036 #win-line { display: block; left: 15.5%; top: 5%; height: 90%; width: 6px; }
         .board.show-147 #win-line { display: block; left: 50%; top: 5%; height: 90%; width: 6px; transform: translateX(-50%); }
-        .board.show-258 #win-line { display: block; right: 15%; top: 5%; height: 90%; width: 6px; }
+        .board.show-258 #win-line { display: block; right: 15.5%; top: 5%; height: 90%; width: 6px; }
         
-        .board.show-048 #win-line { display: block; top: 4%; left: 4%; width: 128%; height: 6px; transform: rotate(45deg); transform-origin: top left; }
-        .board.show-246 #win-line { display: block; top: 4%; right: 4%; width: 128%; height: 6px; transform: rotate(-45deg); transform-origin: top right; }
+        .board.show-048 #win-line { display: block; top: 5%; left: 5%; width: 125%; height: 6px; transform: rotate(45deg); transform-origin: top left; }
+        .board.show-246 #win-line { display: block; top: 5%; right: 5%; width: 125%; height: 6px; transform: rotate(-45deg); transform-origin: top right; }
 
         .controls { display: flex; flex-direction: column; gap: 10px; }
         button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
@@ -153,7 +152,7 @@
                 scores[player]++;
                 document.querySelector(`#score-${player.toLowerCase()} .val`).textContent = scores[player];
                 
-                // FIXED: Set line color permanently to green on a win pattern
+                // Displays the striking vibrant green pattern connection line
                 board.style.setProperty('--line-color', 'var(--color-draw)');
                 board.classList.add('show-' + winningPattern);
                 
