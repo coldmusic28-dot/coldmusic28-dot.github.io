@@ -5,50 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <style>
-        :root {
-            --bg: #0d0f14; --panel: #161a23; --card: #212735; --txt: #fff; --sub: #64748b;
-            --blue: #38bdf8; --red: #ef4444; --green: #10b981; --purple: #6366f1;
-            --g-blue: 0 0 15px rgba(56,189,248,0.6); --g-red: 0 0 15px rgba(239,68,68,0.6);
-            --g-green: 0 0 15px rgba(16,185,129,0.7);
-        }
-        [data-theme="light"] {
-            --bg: #f0f2f5; --panel: #fff; --card: #e4e6eb; --txt: #1c1e21; --sub: #606770;
-            --blue: #007acc; --red: #e11d48; --green: #16a34a; --purple: #4f46e5;
-            --g-blue: 0 0 10px rgba(0,122,204,0.3); --g-red: 0 0 10px rgba(225,29,72,0.3);
-            --g-green: 0 0 10px rgba(22,163,74,0.4);
-        }
+        :root { --bg: #0d0f14; --panel: #161a23; --card: #212735; --txt: #fff; --sub: #64748b; --blue: #38bdf8; --red: #ef4444; --green: #10b981; --purple: #6366f1; --g-blue: 0 0 8px #38bdf8, 0 0 20px rgba(56,189,248,0.4); --g-red: 0 0 8px #ef4444, 0 0 20px rgba(239,68,68,0.4); --g-green: 0 0 8px #10b981, 0 0 20px rgba(16,185,129,0.5); }
+        [data-theme="light"] { --bg: #f0f2f5; --panel: #fff; --card: #e4e6eb; --txt: #1c1e21; --sub: #606770; --blue: #007acc; --red: #e11d48; --green: #16a34a; --purple: #4f46e5; --g-blue: 0 0 6px rgba(0,122,204,0.3); --g-red: 0 0 6px rgba(225,29,72,0.3); --g-green: 0 0 6px rgba(22,163,74,0.4); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--txt); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
-        .container { background: var(--panel); padding: 24px; border-radius: 20px; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-        .top-row { display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .author { font-size: 0.85rem; color: var(--sub); }
-        .theme-btn { background: var(--card); border: none; color: var(--txt); padding: 6px 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border-radius: 8px; }
-        .mode-selector { display: flex; width: 100%; background: var(--card); padding: 4px; border-radius: 12px; margin-bottom: 20px; }
-        .mode-btn { flex: 1; background: transparent; border: none; color: var(--sub); padding: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; border-radius: 10px; }
-        .mode-btn.active { background: var(--panel); color: var(--txt); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .score-board { display: flex; width: 100%; margin-bottom: 20px; gap: 10px; }
-        .score-card { background: var(--card); flex: 1; padding: 10px; border-radius: 12px; text-align: center; }
-        .score-label { font-size: 0.75rem; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
-        .score-val { font-size: 1.4rem; font-weight: 800; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--txt); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        .container { background: var(--panel); padding: 15px; border-radius: 20px; width: 100%; max-width: 350px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .top-row { display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .author { font-size: 0.75rem; color: var(--sub); font-weight: 500; }
+        .theme-btn { background: var(--card); border: none; color: var(--txt); padding: 4px 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
+        .selector { display: flex; width: 100%; background: var(--card); padding: 2px; border-radius: 8px; margin-bottom: 8px; }
+        .sel-btn { flex: 1; background: transparent; border: none; color: var(--sub); padding: 5px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
+        .sel-btn.active { background: var(--panel); color: var(--txt); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .score-board { display: flex; width: 100%; margin-bottom: 12px; gap: 6px; }
+        .score-card { background: var(--card); flex: 1; padding: 6px; border-radius: 8px; text-align: center; }
+        .score-label { font-size: 0.65rem; color: var(--sub); font-weight: 700; text-transform: uppercase; }
+        .score-val { font-size: 1.15rem; font-weight: 800; }
         .score-card.x .score-val { color: var(--blue); text-shadow: var(--g-blue); }
         .score-card.draws .score-val { color: var(--green); }
         .score-card.o .score-val { color: var(--red); text-shadow: var(--g-red); }
-        .status { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; text-align: center; height: 30px; }
-        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-bottom: 20px; }
-        .cell { background: var(--card); border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 2.8rem; font-weight: 900; cursor: pointer; user-select: none; aspect-ratio: 1; transition: all 0.2s; }
-        .cell:hover { background: rgba(128,128,128,0.15); }
+        .status { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; text-align: center; height: 22px; }
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; margin-bottom: 12px; }
+        .cell { background: var(--card); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 2.2rem; font-weight: 900; cursor: pointer; user-select: none; aspect-ratio: 1; transition: background 0.2s; }
+        .cell:hover { background: rgba(128,128,128,0.12); }
         .cell.x-mark { color: var(--blue); text-shadow: var(--g-blue); }
         .cell.o-mark { color: var(--red); text-shadow: var(--g-red); }
-        .cell.win-highlight { color: var(--green) !important; text-shadow: var(--g-green) !important; border: 2px solid var(--green) !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
-        .btn { width: 100%; padding: 14px; font-size: 1rem; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-bottom: 10px; }
-        .btn-p { background: var(--purple); color: #fff; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
+        .cell.win-highlight { color: var(--green) !important; text-shadow: var(--g-green) !important; border: 2px solid var(--green) !important; }
+        .btn { width: 100%; padding: 10px; font-size: 0.9rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 6px; }
+        .btn-p { background: var(--purple); color: #fff; }
         .btn-s { background: transparent; color: var(--sub); border: 2px solid var(--card); margin-bottom: 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="top-row"><div class="author">Made by Quluzade Ibrahim</div><button class="theme-btn" onclick="toggleTheme()" id="tBtn">Bright Mode</button></div>
-        <div class="mode-selector"><button class="mode-btn active" id="mFriend" onclick="changeMode('friend')">VS Friend</button><button class="mode-btn" id="mBot" onclick="changeMode('bot')">VS Bot</button></div>
+        <div class="selector"><button class="sel-btn active" id="mFriend" onclick="chM('friend')">VS Friend</button><button class="sel-btn" id="mBot" onclick="chM('bot')">VS Bot</button></div>
+        <div class="selector" id="dSel" style="display: none;"><button class="sel-btn active" id="dEasy" onclick="chD('easy')">Easy</button><button class="sel-btn" id="dMed" onclick="chD('medium')">Medium</button><button class="sel-btn" id="dHard" onclick="chD('hard')">Hard</button></div>
         <div class="score-board">
             <div class="score-card x"><div class="score-label">Player X</div><div class="score-val" id="sx">0</div></div>
             <div class="score-card draws"><div class="score-label">Draws</div><div class="score-val" id="sd">0</div></div>
@@ -56,32 +47,27 @@
         </div>
         <div class="status" id="stat">Player <span style="color:var(--blue)">X</span>'s Turn</div>
         <div class="board">
-            <div class="cell" id="b0" onclick="tap('b0')"></div><div class="cell" id="b1" onclick="tap('b1')"></div><div class="cell" id="b2" onclick="tap('b2')"></div>
-            <div class="cell" id="b3" onclick="tap('b3')"></div><div class="cell" id="b4" onclick="tap('b4')"></div><div class="cell" id="b5" onclick="tap('b5')"></div>
-            <div class="cell" id="b6" onclick="tap('b6')"></div><div class="cell" id="b7" onclick="tap('b7')"></div><div class="cell" id="b8" onclick="tap('b8')"></div>
+            <div class="cell" id="b0" onclick="tap(0)"></div><div class="cell" id="b1" onclick="tap(1)"></div><div class="cell" id="b2" onclick="tap(2)"></div>
+            <div class="cell" id="b3" onclick="tap(3)"></div><div class="cell" id="b4" onclick="tap(4)"></div><div class="cell" id="b5" onclick="tap(5)"></div>
+            <div class="cell" id="b6" onclick="tap(6)"></div><div class="cell" id="b7" onclick="tap(7)"></div><div class="cell" id="b8" onclick="tap(8)"></div>
         </div>
         <button class="btn btn-p" onclick="next()">Next Round</button><button class="btn btn-s" onclick="reset()">Reset All</button>
     </div>
     <script>
-        var stat = document.getElementById('stat'), sx = document.getElementById('sx'), so = document.getElementById('so'), sd = document.getElementById('sd'), lblO = document.getElementById('lblO'), mFriend = document.getElementById('mFriend'), mBot = document.getElementById('mBot'), tBtn = document.getElementById('tBtn');
-        var pX = 0, pO = 0, dr = 0, turn = 'X', active = true, gameMode = 'friend';
+        var stat = document.getElementById('stat'), sx = document.getElementById('sx'), so = document.getElementById('so'), sd = document.getElementById('sd'), lblO = document.getElementById('lblO'), mFriend = document.getElementById('mFriend'), mBot = document.getElementById('mBot'), tBtn = document.getElementById('tBtn'), dSel = document.getElementById('dSel');
+        var pX = 0, pO = 0, dr = 0, turn = 'X', active = true, gameMode = 'friend', diff = 'easy';
         var wins = ["012","345","678","036","147","258","048","246"];
         function toggleTheme() { var l = document.documentElement.getAttribute('data-theme') === 'light'; document.documentElement.setAttribute('data-theme', l ? 'dark' : 'light'); tBtn.innerText = l ? 'Bright Mode' : 'Dark Mode'; }
-        function changeMode(m) { gameMode = m; mFriend.className = m === 'friend' ? 'mode-btn active' : 'mode-btn'; mBot.className = m === 'bot' ? 'mode-btn active' : 'mode-btn'; lblO.innerText = m === 'friend' ? 'Player O' : 'Bot (O)'; reset(); }
-        function tap(id) { if (!active) return; var c = document.getElementById(id); if (c.innerText !== "") return; c.innerText = turn; c.classList.add(turn === 'X' ? 'x-mark' : 'o-mark'); if (check()) return; turn = turn === 'X' ? 'O' : 'X'; status(); if (gameMode === 'bot' && turn === 'O' && active) setTimeout(bot, 250); }
-        function bot() { var free = []; for (var i = 0; i < 9; i++) if (val(i) === "") free.push(i); if (free.length === 0 || !active) return; var t = find('O') ?? find('X') ?? free[Math.floor(Math.random() * free.length)]; tap('b' + t); }
+        function chM(m) { gameMode = m; mFriend.className = m === 'friend' ? 'sel-btn active' : 'sel-btn'; mBot.className = m === 'bot' ? 'sel-btn active' : 'sel-btn'; dSel.style.display = m === 'bot' ? 'flex' : 'none'; lblO.innerText = m === 'friend' ? 'Player O' : 'Bot (O)'; reset(); }
+        function chD(d) { diff = d; document.getElementById('dEasy').className = d === 'easy' ? 'sel-btn active' : 'sel-btn'; document.getElementById('dMed').className = d === 'medium' ? 'sel-btn active' : 'sel-btn'; document.getElementById('dHard').className = d === 'hard' ? 'sel-btn active' : 'sel-btn'; reset(); }
+        function tap(i) { if (!active || (gameMode === 'bot' && turn === 'O')) return; var c = document.getElementById('b' + i); if (c.innerText !== "") return; c.innerText = turn; c.classList.add(turn === 'X' ? 'x-mark' : 'o-mark'); if (check()) return; turn = turn === 'X' ? 'O' : 'X'; status(); if (gameMode === 'bot' && turn === 'O' && active) setTimeout(bot, 200); }
+        function bot() { if (!active) return; var free = []; for (var i = 0; i < 9; i++) if (val(i) === "") free.push(i); if (free.length === 0) return; var t = null; if (diff === 'hard') { t = find('O') ?? find('X') ?? (val(4) === "" ? 4 : free[Math.floor(Math.random() * free.length)]); } else if (diff === 'medium') { t = Math.random() < 0.6 ? (find('O') ?? find('X')) : null; } if (t === null) t = free[Math.floor(Math.random() * free.length)]; tap(t); }
         function val(i) { return document.getElementById('b' + i).innerText; }
-        function find(p) { for (var i = 0; i < wins.length; i++) { var a = wins[i][0], b = wins[i][1], c = wins[i][2]; if (val(a) === p && val(b) === p && val(c) === "") return c; if (val(a) === p && val(c) === p && val(b) === "") return b; if (val(b) === p && val(c) === p && val(a) === "") return a; } return null; }
+        function find(p) { for (var i = 0; i < wins.length; i++) { var a = parseInt(wins[i][0]), b = parseInt(wins[i][1]), c = parseInt(wins[i][2]); if (val(a) === p && val(b) === p && val(c) === "") return c; if (val(a) === p && val(c) === p && val(b) === "") return b; if (val(b) === p && val(c) === p && val(a) === "") return a; } return null; }
         function check() {
-            var comb = null; for (var i = 0; i < wins.length; i++) { var a = wins[i][0], b = wins[i][1], c = wins[i][2]; if (val(a) !== "" && val(a) === val(b) && val(a) === val(c)) { comb = wins[i]; break; } }
-            if (comb) {
-                document.getElementById('b' + comb[0]).classList.add('win-highlight'); document.getElementById('b' + comb[1]).classList.add('win-highlight'); document.getElementById('b' + comb[2]).classList.add('win-highlight');
-                var n = (gameMode === 'bot' && turn === 'O') ? 'Bot' : turn; stat.innerHTML = 'Player <span style="color:var(--green); text-shadow:var(--g-green);">' + n + '</span> Wins!';
-                if (turn === 'X') { pX++; } else { pO++; } up(); active = false; return true;
-            }
-            var f = true; for (var i = 0; i < 9; i++) if (val(i) === "") f = false;
-            if (f) { stat.innerHTML = '<span style="color:var(--green)">It\'s a Draw!</span>'; dr++; up(); active = false; return true; }
-            return false;
+            var comb = null; for (var i = 0; i < wins.length; i++) { var a = parseInt(wins[i][0]), b = parseInt(wins[i][1]), c = parseInt(wins[i][2]); if (val(a) !== "" && val(a) === val(b) && val(a) === val(c)) { comb = wins[i]; break; } }
+            if (comb) { for (var i = 0; i < 3; i++) document.getElementById('b' + comb[i]).classList.add('win-highlight'); var n = (gameMode === 'bot' && turn === 'O') ? 'Bot' : turn; stat.innerHTML = 'Player <span style="color:var(--green); text-shadow:var(--g-green);">' + n + '</span> Wins!'; if (turn === 'X') { pX++; } else { pO++; } up(); active = false; return true; }
+            var f = true; for (var i = 0; i < 9; i++) if (val(i) === "") f = false; if (f) { stat.innerHTML = '<span style="color:var(--green)">It\'s a Draw!</span>'; dr++; up(); active = false; return true; } return false;
         }
         function status() { var n = (gameMode === 'bot' && turn === 'O') ? 'Bot' : turn; stat.innerHTML = 'Player <span style="color:' + (turn === 'X' ? 'var(--blue)' : 'var(--red)') + '">' + n + '</span>\'s Turn'; }
         function up() { sx.innerText = pX; so.innerText = pO; sd.innerText = dr; }
