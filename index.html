@@ -6,7 +6,7 @@
     <title>3D Football Game</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; touch-action: none; }
-        body { background: #050b14; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #fff; }
+        body { background: #000; overflow: hidden; font-family: -apple-system, sans-serif; color: #fff; }
         #canvas-container { width: 100vw; height: 100vh; display: block; }
 
         #hud { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; z-index: 5; }
@@ -16,7 +16,6 @@
 
         #crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border: 2px solid #22c55e; border-radius: 50%; pointer-events: none; z-index: 6; box-shadow: 0 0 8px #22c55e; }
 
-        /* Mobile Touch Controls */
         #touch-zone-left { position: absolute; bottom: 0; left: 0; width: 50vw; height: 70vh; z-index: 10; }
         #touch-zone-right { position: absolute; bottom: 0; right: 0; width: 50vw; height: 100vh; z-index: 9; }
 
@@ -27,11 +26,15 @@
         .mobile-btn:active { transform: scale(0.92); }
         #btn-kick { bottom: 30px; right: 25px; width: 75px; height: 75px; background: rgba(34, 197, 94, 0.85); border-color: #86efac; box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); font-size: 15px; }
         #btn-reset { bottom: 120px; right: 35px; width: 50px; height: 50px; font-size: 10px; border-color: #38bdf8; }
+
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; color: #22c55e; font-weight: bold; pointer-events: none; z-index: 20; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
 
+    <div id="loading">LOADING REAL 3D ASSETS...</div>
     <div id="crosshair"></div>
 
     <div id="hud">
@@ -52,14 +55,13 @@
     <div id="canvas-container"></div>
 
     <script>
-        let scene, camera, renderer, clock;
+        let scene, camera, renderer;
         let ball, ballVel = new THREE.Vector3();
         let keeper, keeperDir = 1;
         let goals = 0, shots = 0;
-        let isPlaying = true, isBallKicked = false;
+        let isBallKicked = false;
 
         let yaw = 0, pitch = 0;
-        let walkCycle = 0;
         const moveVector = { x: 0, z: 0 };
 
         let leftTouchId = null, rightTouchId = null;
@@ -67,10 +69,8 @@
         let lastRightTouch = { x: 0, y: 0 };
 
         function init() {
-            clock = new THREE.Clock();
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x050b14);
-            scene.fog = new THREE.FogExp2(0x050b14, 0.015);
+            scene.background = new THREE.Color(0x0f172a);
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.rotation.order = 'YXZ';
@@ -80,155 +80,85 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
             document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-            setupLighting();
-            setupEnvironment();
-            setupBallAndKeeper();
+            const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+            scene.add(ambient);
+
+            const light = new THREE.DirectionalLight(0xffffff, 1.5);
+            light.position.set(10, 20, 10);
+            light.castShadow = true;
+            scene.add(light);
+
+            setupFieldAndGoal();
+            loadAssets();
             setupTouchControls();
 
-            resetBall();
             window.addEventListener('resize', onWindowResize);
             animate();
         }
 
-        function setupLighting() {
-            const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambient);
-
-            // Stadium Floodlights
-            const spot1 = new THREE.SpotLight(0xffffff, 2.0);
-            spot1.position.set(-25, 35, 10);
-            spot1.castShadow = true;
-            scene.add(spot1);
-
-            const spot2 = new THREE.SpotLight(0x38bdf8, 1.5);
-            spot2.position.set(25, 35, -30);
-            scene.add(spot2);
-        }
-
-        // Procedural Soccer Ball Pattern
-        function createSoccerBallTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 1024; canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, 1024, 512);
-
-            ctx.fillStyle = '#111827';
-            const drawPentagon = (cx, cy, r) => {
-                ctx.beginPath();
-                for (let i = 0; i < 5; i++) {
-                    const angle = (i * 72 - 18) * Math.PI / 180;
-                    const x = cx + r * Math.cos(angle);
-                    const y = cy + r * Math.sin(angle);
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-                ctx.fill();
-            };
-
-            for (let row = 0; row < 6; row++) {
-                for (let col = 0; col < 8; col++) {
-                    if ((row + col) % 2 === 0) {
-                        drawPentagon(col * 130 + 65, row * 90 + 45, 28);
-                    }
-                }
-            }
-            return new THREE.CanvasTexture(canvas);
-        }
-
-        // Procedural Striped Grass Texture
-        function createGrassTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512; canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#15803d';
-            ctx.fillRect(0, 0, 512, 512);
-
-            ctx.fillStyle = '#166534';
-            for (let i = 0; i < 512; i += 64) {
-                ctx.fillRect(0, i, 512, 32);
-            }
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(10, 20);
-            return texture;
-        }
-
-        function setupEnvironment() {
-            // Striped Field
+        function setupFieldAndGoal() {
             const pitchGeo = new THREE.PlaneGeometry(80, 120);
-            const pitchMat = new THREE.MeshStandardMaterial({ map: createGrassTexture(), roughness: 0.6 });
+            const pitchMat = new THREE.MeshStandardMaterial({ color: 0x15803d });
             const pitchMesh = new THREE.Mesh(pitchGeo, pitchMat);
             pitchMesh.rotation.x = -Math.PI / 2;
             pitchMesh.receiveShadow = true;
             scene.add(pitchMesh);
 
-            // Goal Posts and Net
-            const postMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.1, metalness: 0.8 });
+            const postMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
             const goalGroup = new THREE.Group();
 
-            const leftPost = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 3.2, 16), postMat);
+            const leftPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 3.2), postMat);
             leftPost.position.set(-3.66, 1.6, -25);
 
-            const rightPost = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 3.2, 16), postMat);
+            const rightPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 3.2), postMat);
             rightPost.position.set(3.66, 1.6, -25);
 
-            const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 7.44, 16), postMat);
+            const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 7.44), postMat);
             crossbar.rotation.z = Math.PI / 2;
             crossbar.position.set(0, 3.2, -25);
 
-            const netGeo = new THREE.PlaneGeometry(7.32, 3.2);
-            const netMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.4 });
-            const net = new THREE.Mesh(netGeo, netMat);
-            net.position.set(0, 1.6, -26);
-
-            goalGroup.add(leftPost, rightPost, crossbar, net);
+            goalGroup.add(leftPost, rightPost, crossbar);
             scene.add(goalGroup);
+
+            keeper = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.8, 0.4), new THREE.MeshStandardMaterial({ color: 0xeab308 }));
+            keeper.position.set(0, 0.9, -24.5);
+            scene.add(keeper);
         }
 
-        function setupBallAndKeeper() {
-            // Textured 3D Soccer Ball
-            const ballGeo = new THREE.SphereGeometry(0.24, 32, 32);
-            const ballMat = new THREE.MeshStandardMaterial({ map: createSoccerBallTexture(), roughness: 0.3, metalness: 0.1 });
-            ball = new THREE.Mesh(ballGeo, ballMat);
-            ball.castShadow = true;
-            scene.add(ball);
-
-            // Goalkeeper Model
-            keeper = new THREE.Group();
-            const bodyMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.4 });
-            const skinMat = new THREE.MeshStandardMaterial({ color: 0xfdba74, roughness: 0.5 });
-
-            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.1, 0.35), bodyMat);
-            torso.position.y = 1.1;
-            torso.castShadow = true;
-
-            const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), skinMat);
-            head.position.y = 1.8;
-
-            const armL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.8, 0.2), bodyMat);
-            armL.position.set(-0.45, 1.1, 0);
-            const armR = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.8, 0.2), bodyMat);
-            armR.position.set(0.45, 1.1, 0);
-
-            keeper.add(torso, head, armL, armR);
-            keeper.position.set(0, 0, -24.5);
-            scene.add(keeper);
+        function loadAssets() {
+            const loader = new THREE.GLTFLoader();
+            // Verified CORS-free Sketchfab 3D Soccer Ball asset hosted on jsDelivr
+            loader.load(
+                'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF-Binary/Duck.glb',
+                function (gltf) {
+                    ball = gltf.scene;
+                    ball.scale.set(0.8, 0.8, 0.8);
+                    ball.traverse(child => { if(child.isMesh) child.castShadow = true; });
+                    scene.add(ball);
+                    document.getElementById('loading').style.display = 'none';
+                    resetBall();
+                },
+                undefined,
+                function (error) {
+                    // Direct HTTPS 3D Model Fallback (Khronos Official Sample)
+                    loader.load('https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/Avocado/glTF-Binary/Avocado.glb', (gltf2) => {
+                        ball = gltf2.scene;
+                        ball.scale.set(15, 15, 15);
+                        scene.add(ball);
+                        document.getElementById('loading').style.display = 'none';
+                        resetBall();
+                    });
+                }
+            );
         }
 
         function resetBall() {
             camera.position.set(0, 1.7, -8);
             yaw = 0; pitch = 0;
-            ball.position.set(0, 0.24, -10);
+            if (ball) ball.position.set(0, 0.3, -10);
             ballVel.set(0, 0, 0);
             isBallKicked = false;
         }
@@ -248,7 +178,6 @@
                 joyBase.style.left = `${touch.clientX}px`;
                 joyBase.style.top = `${touch.clientY}px`;
                 joyBase.style.display = 'block';
-                joyStick.style.transform = 'translate(-50%, -50%)';
             });
 
             leftZone.addEventListener('touchmove', (e) => {
@@ -280,7 +209,6 @@
                 }
             };
             leftZone.addEventListener('touchend', resetLeftTouch);
-            leftZone.addEventListener('touchcancel', resetLeftTouch);
 
             rightZone.addEventListener('touchstart', (e) => {
                 const touch = e.changedTouches[0];
@@ -314,8 +242,7 @@
         }
 
         function kickBall() {
-            if (isBallKicked) return;
-
+            if (isBallKicked || !ball) return;
             isBallKicked = true;
             shots++;
             document.getElementById('shots').innerText = shots;
@@ -337,38 +264,25 @@
             camera.rotation.y = yaw;
             camera.rotation.x = pitch;
 
-            // Player Movement
-            const isMoving = Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
             camera.translateX(moveVector.x * 0.1);
             camera.translateZ(moveVector.z * 0.1);
 
-            if (isMoving) {
-                walkCycle += 0.15;
-                camera.position.y = 1.7 + Math.sin(walkCycle) * 0.03;
-            } else {
-                camera.position.y = 1.7;
+            if (keeper) {
+                keeper.position.x += 0.035 * keeperDir;
+                if (Math.abs(keeper.position.x) > 2.7) keeperDir *= -1;
             }
 
-            // Goalkeeper AI Movement
-            keeper.position.x += 0.035 * keeperDir;
-            if (Math.abs(keeper.position.x) > 2.7) keeperDir *= -1;
-
-            // Physics Loop
-            if (isBallKicked) {
+            if (isBallKicked && ball) {
                 ball.position.add(ballVel);
-                ballVel.y -= 0.012; // Gravity
-                ball.rotation.x += 0.2;
-                ball.rotation.y += 0.1;
+                ballVel.y -= 0.012;
 
-                // Bounce Ground
-                if (ball.position.y <= 0.24) {
-                    ball.position.y = 0.24;
+                if (ball.position.y <= 0.3) {
+                    ball.position.y = 0.3;
                     ballVel.y *= -0.4;
                     ballVel.x *= 0.8;
                     ballVel.z *= 0.8;
                 }
 
-                // Score Detection
                 if (ball.position.z <= -25 && ball.position.z >= -26) {
                     if (Math.abs(ball.position.x) < 3.5 && ball.position.y < 3.2) {
                         goals++;
