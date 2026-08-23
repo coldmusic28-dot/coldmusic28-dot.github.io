@@ -2,77 +2,359 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3D Mobile Football</title>
     <style>
-        :root { --bg: #0d0f14; --panel: #161a23; --card: #212735; --txt: #fff; --sub: #64748b; --blue: #38bdf8; --red: #ef4444; --green: #10b981; --purple: #6366f1; --g-blue: 0 0 8px #38bdf8, 0 0 20px rgba(56,189,248,0.4); --g-red: 0 0 8px #ef4444, 0 0 20px rgba(239,68,68,0.4); --g-green: 0 0 8px #10b981, 0 0 20px rgba(16,185,129,0.5); }
-        [data-theme="light"] { --bg: #f0f2f5; --panel: #fff; --card: #e4e6eb; --txt: #1c1e21; --sub: #606770; --blue: #007acc; --red: #e11d48; --green: #16a34a; --purple: #4f46e5; --g-blue: 0 0 6px rgba(0,122,204,0.3); --g-red: 0 0 6px rgba(225,29,72,0.3); --g-green: 0 0 6px rgba(22,163,74,0.4); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--txt); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-        .container { background: var(--panel); padding: 15px; border-radius: 20px; width: 100%; max-width: 350px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-        .top-row { display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .author { font-size: 0.75rem; color: var(--sub); font-weight: 500; }
-        .theme-btn { background: var(--card); border: none; color: var(--txt); padding: 4px 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
-        .selector { display: flex; width: 100%; background: var(--card); padding: 2px; border-radius: 8px; margin-bottom: 8px; }
-        .sel-btn { flex: 1; background: transparent; border: none; color: var(--sub); padding: 5px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border-radius: 6px; }
-        .sel-btn.active { background: var(--panel); color: var(--txt); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-        .score-board { display: flex; width: 100%; margin-bottom: 12px; gap: 6px; }
-        .score-card { background: var(--card); flex: 1; padding: 6px; border-radius: 8px; text-align: center; }
-        .score-label { font-size: 0.65rem; color: var(--sub); font-weight: 700; text-transform: uppercase; }
-        .score-val { font-size: 1.15rem; font-weight: 800; }
-        .score-card.x .score-val { color: var(--blue); text-shadow: var(--g-blue); }
-        .score-card.draws .score-val { color: var(--green); }
-        .score-card.o .score-val { color: var(--red); text-shadow: var(--g-red); }
-        .status { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; text-align: center; height: 22px; }
-        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; margin-bottom: 12px; }
-        .cell { background: var(--card); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 2.2rem; font-weight: 900; cursor: pointer; user-select: none; aspect-ratio: 1; transition: background 0.2s; }
-        .cell:hover { background: rgba(128,128,128,0.12); }
-        .cell.x-mark { color: var(--blue); text-shadow: var(--g-blue); }
-        .cell.o-mark { color: var(--red); text-shadow: var(--g-red); }
-        .cell.win-highlight { color: var(--green) !important; text-shadow: var(--g-green) !important; border: 2px solid var(--green) !important; }
-        .btn { width: 100%; padding: 10px; font-size: 0.9rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 6px; }
-        .btn-p { background: var(--purple); color: #fff; }
-        .btn-s { background: transparent; color: var(--sub); border: 2px solid var(--card); margin-bottom: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; touch-action: none; }
+        body { background: #000; overflow: hidden; font-family: -apple-system, sans-serif; color: #fff; }
+        #canvas-container { width: 100vw; height: 100vh; display: block; }
+
+        #hud { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; z-index: 5; }
+        .hud-top { display: flex; justify-content: space-between; width: 100%; }
+        .stat-box { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(34, 197, 94, 0.5); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 14px; color: #4ade80; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
+        .stat-box span { color: #fff; font-size: 16px; }
+
+        #crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border: 2px solid #22c55e; border-radius: 50%; pointer-events: none; z-index: 6; box-shadow: 0 0 8px #22c55e; }
+
+        /* Mobile Controls */
+        #touch-zone-left { position: absolute; bottom: 0; left: 0; width: 50vw; height: 70vh; z-index: 10; }
+        #touch-zone-right { position: absolute; bottom: 0; right: 0; width: 50vw; height: 100vh; z-index: 9; }
+
+        #joystick-base { position: absolute; width: 90px; height: 90px; background: rgba(255,255,255,0.1); border: 2px solid rgba(34, 197, 94, 0.6); border-radius: 50%; display: none; pointer-events: none; z-index: 11; transform: translate(-50%, -50%); }
+        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 36px; height: 36px; background: #22c55e; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 10px #22c55e; }
+
+        .mobile-btn { position: absolute; z-index: 12; background: rgba(15, 23, 42, 0.85); border: 2px solid #22c55e; color: #fff; font-weight: 800; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); backdrop-filter: blur(4px); }
+        .mobile-btn:active { transform: scale(0.92); }
+        #btn-kick { bottom: 30px; right: 25px; width: 75px; height: 75px; background: rgba(34, 197, 94, 0.85); border-color: #86efac; box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); font-size: 15px; }
+        #btn-reset { bottom: 120px; right: 35px; width: 50px; height: 50px; font-size: 10px; border-color: #38bdf8; }
+
+        #screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 15, 0.95); backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 20; padding: 20px; }
+        #screen-overlay h1 { font-size: 28px; color: #22c55e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px #22c55e; }
+        #screen-overlay p { font-size: 13px; color: #94a3b8; margin: 4px 0; }
+        #screen-overlay .btn { margin-top: 20px; padding: 12px 32px; background: #16a34a; color: #fff; font-weight: 800; font-size: 15px; border-radius: 8px; border: 1px solid #4ade80; box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="top-row"><div class="author">Made by Quluzade Ibrahim</div><button class="theme-btn" onclick="toggleTheme()" id="tBtn">Bright Mode</button></div>
-        <div class="selector"><button class="sel-btn active" id="mFriend" onclick="chM('friend')">VS Friend</button><button class="sel-btn" id="mBot" onclick="chM('bot')">VS Bot</button></div>
-        <div class="selector" id="dSel" style="display: none;"><button class="sel-btn active" id="dEasy" onclick="chD('easy')">Easy</button><button class="sel-btn" id="dMed" onclick="chD('medium')">Medium</button><button class="sel-btn" id="dHard" onclick="chD('hard')">Hard</button></div>
-        <div class="score-board">
-            <div class="score-card x"><div class="score-label">Player X</div><div class="score-val" id="sx">0</div></div>
-            <div class="score-card draws"><div class="score-label">Draws</div><div class="score-val" id="sd">0</div></div>
-            <div class="score-card o"><div class="score-label" id="lblO">Player O</div><div class="score-val" id="so">0</div></div>
-        </div>
-        <div class="status" id="stat">Player <span style="color:var(--blue)">X</span>'s Turn</div>
-        <div class="board">
-            <div class="cell" id="b0" onclick="tap(0)"></div><div class="cell" id="b1" onclick="tap(1)"></div><div class="cell" id="b2" onclick="tap(2)"></div>
-            <div class="cell" id="b3" onclick="tap(3)"></div><div class="cell" id="b4" onclick="tap(4)"></div><div class="cell" id="b5" onclick="tap(5)"></div>
-            <div class="cell" id="b6" onclick="tap(6)"></div><div class="cell" id="b7" onclick="tap(7)"></div><div class="cell" id="b8" onclick="tap(8)"></div>
-        </div>
-        <button class="btn btn-p" onclick="next()">Next Round</button><button class="btn btn-s" onclick="reset()">Reset All</button>
+
+    <div id="screen-overlay">
+        <h1>MOBILE STRIKER 3D</h1>
+        <p>First-Person Penalty Shootout</p>
+        <p><b>Left Touch:</b> Walk | <b>Right Touch:</b> Aim Shot</p>
+        <p><b>KICK:</b> Shoot Ball into Goal</p>
+        <div class="btn" onclick="startGame()">START MATCH</div>
     </div>
+
+    <div id="crosshair"></div>
+
+    <div id="hud">
+        <div class="hud-top">
+            <div class="stat-box">GOALS: <span id="goals">0</span></div>
+            <div class="stat-box">SHOTS: <span id="shots">0</span></div>
+        </div>
+    </div>
+
+    <div id="touch-zone-left"></div>
+    <div id="touch-zone-right"></div>
+
+    <div id="joystick-base"><div id="joystick-stick"></div></div>
+
+    <div id="btn-kick" class="mobile-btn">KICK</div>
+    <div id="btn-reset" class="mobile-btn">RESET</div>
+
+    <div id="canvas-container"></div>
+
     <script>
-        var stat = document.getElementById('stat'), sx = document.getElementById('sx'), so = document.getElementById('so'), sd = document.getElementById('sd'), lblO = document.getElementById('lblO'), mFriend = document.getElementById('mFriend'), mBot = document.getElementById('mBot'), tBtn = document.getElementById('tBtn'), dSel = document.getElementById('dSel');
-        var pX = 0, pO = 0, dr = 0, turn = 'X', active = true, gameMode = 'friend', diff = 'easy';
-        var wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        function toggleTheme() { var l = document.documentElement.getAttribute('data-theme') === 'light'; document.documentElement.setAttribute('data-theme', l ? 'dark' : 'light'); tBtn.innerText = l ? 'Bright Mode' : 'Dark Mode'; }
-        function chM(m) { gameMode = m; mFriend.className = m === 'friend' ? 'sel-btn active' : 'sel-btn'; mBot.className = m === 'bot' ? 'sel-btn active' : 'sel-btn'; dSel.style.display = m === 'bot' ? 'flex' : 'none'; lblO.innerText = m === 'friend' ? 'Player O' : 'Bot (O)'; reset(); }
-        function chD(d) { diff = d; document.getElementById('dEasy').className = d === 'easy' ? 'sel-btn active' : 'sel-btn'; document.getElementById('dMed').className = d === 'medium' ? 'sel-btn active' : 'sel-btn'; document.getElementById('dHard').className = d === 'hard' ? 'sel-btn active' : 'sel-btn'; reset(); }
-        function tap(i) { if (!active || (gameMode === 'bot' && turn === 'O')) return; var c = document.getElementById('b' + i); if (c.innerText !== "") return; c.innerText = turn; c.classList.add(turn === 'X' ? 'x-mark' : 'o-mark'); if (check()) return; turn = turn === 'X' ? 'O' : 'X'; status(); if (gameMode === 'bot' && turn === 'O' && active) setTimeout(bot, 200); }
-        function bot() { if (!active) return; var free = []; for (var i = 0; i < 9; i++) if (val(i) === "") free.push(i); if (free.length === 0) return; var t = null; if (diff === 'hard') { t = find('O') ?? find('X') ?? (val(4) === "" ? 4 : free[Math.floor(Math.random() * free.length)]); } else if (diff === 'medium') { t = Math.random() < 0.6 ? (find('O') ?? find('X')) : null; } if (t === null) t = free[Math.floor(Math.random() * free.length)]; var cell = document.getElementById('b' + t); cell.innerText = 'O'; cell.classList.add('o-mark'); if (check()) return; turn = 'X'; status(); }
-        function val(i) { return document.getElementById('b' + i).innerText; }
-        function find(p) { for (var i = 0; i < wins.length; i++) { var a = wins[i][0], b = wins[i][1], c = wins[i][2]; if (val(a) === p && val(b) === p && val(c) === "") return c; if (val(a) === p && val(c) === p && val(b) === "") return b; if (val(b) === p && val(c) === p && val(a) === "") return a; } return null; }
-        function check() {
-            var comb = null; for (var i = 0; i < wins.length; i++) { var a = wins[i][0], b = wins[i][1], c = wins[i][2]; if (val(a) !== "" && val(a) === val(b) && val(a) === val(c)) { comb = wins[i]; break; } }
-            if (comb) { for (var i = 0; i < 3; i++) document.getElementById('b' + comb[i]).classList.add('win-highlight'); var n = (gameMode === 'bot' && turn === 'O') ? 'Bot' : turn; stat.innerHTML = 'Player <span style="color:var(--green); text-shadow:var(--g-green);">' + n + '</span> Wins!'; if (turn === 'X') { pX++; } else { pO++; } up(); active = false; return true; }
-            var f = true; for (var i = 0; i < 9; i++) if (val(i) === "") f = false; if (f) { stat.innerHTML = '<span style="color:var(--green)">It\'s a Draw!</span>'; dr++; up(); active = false; return true; } return false;
+        let scene, camera, renderer, clock;
+        let ball, ballVel = new THREE.Vector3();
+        let keeper, keeperDir = 1;
+        let goals = 0, shots = 0;
+        let isPlaying = false, isBallKicked = false;
+
+        let yaw = 0, pitch = 0;
+        let walkCycle = 0;
+        const moveVector = { x: 0, z: 0 };
+
+        let leftTouchId = null, rightTouchId = null;
+        let joystickCenter = { x: 0, y: 0 };
+        let lastRightTouch = { x: 0, y: 0 };
+
+        function init() {
+            clock = new THREE.Clock();
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x38bdf8);
+            scene.fog = new THREE.FogExp2(0x38bdf8, 0.015);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.rotation.order = 'YXZ';
+            scene.add(camera);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            setupLighting();
+            setupPitchAndGoal();
+            setupBallAndKeeper();
+            setupTouchControls();
+
+            resetBall();
+            window.addEventListener('resize', onWindowResize);
+            animate();
         }
-        function status() { var n = (gameMode === 'bot' && turn === 'O') ? 'Bot' : turn; stat.innerHTML = 'Player <span style="color:' + (turn === 'X' ? 'var(--blue)' : 'var(--red)') + '">' + n + '</span>\'s Turn'; }
-        function up() { sx.innerText = pX; so.innerText = pO; sd.innerText = dr; }
-        function next() { active = true; turn = 'X'; status(); for (var i = 0; i < 9; i++) { var c = document.getElementById('b' + i); c.innerText = ""; c.className = "cell"; } }
-        function reset() { pX = 0; pO = 0; dr = 0; up(); next(); }
+
+        function startGame() {
+            document.getElementById('screen-overlay').style.display = 'none';
+            isPlaying = true;
+        }
+
+        function setupLighting() {
+            const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambient);
+
+            const sun = new THREE.DirectionalLight(0xfffbeb, 1.4);
+            sun.position.set(20, 40, 20);
+            sun.castShadow = true;
+            scene.add(sun);
+        }
+
+        // Procedural Football Texture Generator
+        function generateBallTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 512, 256);
+
+            ctx.fillStyle = '#111827';
+            for (let i = 0; i < 16; i++) {
+                const x = (i % 4) * 128 + 64;
+                const y = Math.floor(i / 4) * 64 + 32;
+                ctx.beginPath();
+                ctx.arc(x, y, 22, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function setupPitchAndGoal() {
+            // Field Ground
+            const pitchGeo = new THREE.PlaneGeometry(60, 100);
+            const pitchMat = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.6 });
+            const pitchMesh = new THREE.Mesh(pitchGeo, pitchMat);
+            pitchMesh.rotation.x = -Math.PI / 2;
+            pitchMesh.receiveShadow = true;
+            scene.add(pitchMesh);
+
+            // Goal Frame
+            const postMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+            const goalGroup = new THREE.Group();
+
+            const leftPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 3, 16), postMat);
+            leftPost.position.set(-3.66, 1.5, -25);
+
+            const rightPost = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 3, 16), postMat);
+            rightPost.position.set(3.66, 1.5, -25);
+
+            const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 7.44, 16), postMat);
+            crossbar.rotation.z = Math.PI / 2;
+            crossbar.position.set(0, 3, -25);
+
+            // Net
+            const netGeo = new THREE.PlaneGeometry(7.32, 3);
+            const netMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.3 });
+            const net = new THREE.Mesh(netGeo, netMat);
+            net.position.set(0, 1.5, -26);
+
+            goalGroup.add(leftPost, rightPost, crossbar, net);
+            scene.add(goalGroup);
+        }
+
+        function setupBallAndKeeper() {
+            // Ball with Procedural Texture
+            const ballGeo = new THREE.SphereGeometry(0.24, 32, 32);
+            const ballMat = new THREE.MeshStandardMaterial({ map: generateBallTexture(), roughness: 0.3 });
+            ball = new THREE.Mesh(ballGeo, ballMat);
+            ball.castShadow = true;
+            scene.add(ball);
+
+            // Goalkeeper
+            keeper = new THREE.Group();
+            const keeperMat = new THREE.MeshStandardMaterial({ color: 0xeab308 });
+            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.1, 0.35), keeperMat);
+            torso.position.y = 1.1;
+            torso.castShadow = true;
+
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), new THREE.MeshStandardMaterial({ color: 0xfdba74 }));
+            head.position.y = 1.8;
+
+            keeper.add(torso, head);
+            keeper.position.set(0, 0, -24.5);
+            scene.add(keeper);
+        }
+
+        function resetBall() {
+            camera.position.set(0, 1.7, -8);
+            yaw = 0; pitch = 0;
+            ball.position.set(0, 0.24, -10);
+            ballVel.set(0, 0, 0);
+            isBallKicked = false;
+        }
+
+        function setupTouchControls() {
+            const leftZone = document.getElementById('touch-zone-left');
+            const rightZone = document.getElementById('touch-zone-right');
+            const joyBase = document.getElementById('joystick-base');
+            const joyStick = document.getElementById('joystick-stick');
+
+            leftZone.addEventListener('touchstart', (e) => {
+                if (leftTouchId !== null) return;
+                const touch = e.changedTouches[0];
+                leftTouchId = touch.identifier;
+                joystickCenter = { x: touch.clientX, y: touch.clientY };
+
+                joyBase.style.left = `${touch.clientX}px`;
+                joyBase.style.top = `${touch.clientY}px`;
+                joyBase.style.display = 'block';
+                joyStick.style.transform = 'translate(-50%, -50%)';
+            });
+
+            leftZone.addEventListener('touchmove', (e) => {
+                for (let touch of e.changedTouches) {
+                    if (touch.identifier === leftTouchId) {
+                        const dx = touch.clientX - joystickCenter.x;
+                        const dy = touch.clientY - joystickCenter.y;
+                        const dist = Math.min(Math.hypot(dx, dy), 35);
+                        const angle = Math.atan2(dy, dx);
+
+                        const clampX = Math.cos(angle) * dist;
+                        const clampY = Math.sin(angle) * dist;
+
+                        joyStick.style.transform = `translate(calc(-50% + ${clampX}px), calc(-50% + ${clampY}px))`;
+
+                        moveVector.x = clampX / 35;
+                        moveVector.z = clampY / 35;
+                    }
+                }
+            });
+
+            const resetLeftTouch = (e) => {
+                for (let touch of e.changedTouches) {
+                    if (touch.identifier === leftTouchId) {
+                        leftTouchId = null;
+                        moveVector.x = 0; moveVector.z = 0;
+                        joyBase.style.display = 'none';
+                    }
+                }
+            };
+            leftZone.addEventListener('touchend', resetLeftTouch);
+            leftZone.addEventListener('touchcancel', resetLeftTouch);
+
+            rightZone.addEventListener('touchstart', (e) => {
+                const touch = e.changedTouches[0];
+                rightTouchId = touch.identifier;
+                lastRightTouch = { x: touch.clientX, y: touch.clientY };
+            });
+
+            rightZone.addEventListener('touchmove', (e) => {
+                for (let touch of e.changedTouches) {
+                    if (touch.identifier === rightTouchId) {
+                        const dx = touch.clientX - lastRightTouch.x;
+                        const dy = touch.clientY - lastRightTouch.y;
+
+                        yaw -= dx * 0.004;
+                        pitch -= dy * 0.004;
+                        pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, pitch));
+
+                        lastRightTouch = { x: touch.clientX, y: touch.clientY };
+                    }
+                }
+            });
+
+            rightZone.addEventListener('touchend', (e) => {
+                for (let touch of e.changedTouches) {
+                    if (touch.identifier === rightTouchId) rightTouchId = null;
+                }
+            });
+
+            document.getElementById('btn-kick').addEventListener('touchstart', (e) => { e.preventDefault(); kickBall(); });
+            document.getElementById('btn-reset').addEventListener('touchstart', (e) => { e.preventDefault(); resetBall(); });
+        }
+
+        function kickBall() {
+            if (!isPlaying || isBallKicked) return;
+
+            isBallKicked = true;
+            shots++;
+            document.getElementById('shots').innerText = shots;
+
+            const dir = new THREE.Vector3(0, 0, -1).applyEuler(camera.rotation);
+            ballVel.copy(dir).multiplyScalar(0.65);
+            ballVel.y = Math.max(0.08, dir.y * 0.5 + 0.12);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isPlaying) {
+                camera.rotation.y = yaw;
+                camera.rotation.x = pitch;
+
+                // Player Movement
+                const isMoving = Math.abs(moveVector.x) > 0.1 || Math.abs(moveVector.z) > 0.1;
+                camera.translateX(moveVector.x * 0.1);
+                camera.translateZ(moveVector.z * 0.1);
+
+                if (isMoving) {
+                    walkCycle += 0.15;
+                    camera.position.y = 1.7 + Math.sin(walkCycle) * 0.03;
+                } else {
+                    camera.position.y = 1.7;
+                }
+
+                // Goalkeeper AI
+                keeper.position.x += 0.035 * keeperDir;
+                if (Math.abs(keeper.position.x) > 2.7) keeperDir *= -1;
+
+                // Physics update
+                if (isBallKicked) {
+                    ball.position.add(ballVel);
+                    ballVel.y -= 0.012; // Gravity
+                    ball.rotation.x += 0.2;
+
+                    // Ground bounce
+                    if (ball.position.y <= 0.24) {
+                        ball.position.y = 0.24;
+                        ballVel.y *= -0.4;
+                        ballVel.x *= 0.8;
+                        ballVel.z *= 0.8;
+                    }
+
+                    // Score Detection
+                    if (ball.position.z <= -25 && ball.position.z >= -26) {
+                        if (Math.abs(ball.position.x) < 3.5 && ball.position.y < 2.9) {
+                            goals++;
+                            document.getElementById('goals').innerText = goals;
+                            resetBall();
+                        }
+                    }
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        init();
     </script>
 </body>
 </html>
